@@ -158,6 +158,10 @@
       this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, { font: "24px Arial", fill: "#333333" });
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
+      // Replay
+      this.replayButton = this.game.add.button(this.game.width, 0, 'replayButton', this.startClick, this);
+      this.replayButton.anchor.setTo(0.5,0.5);
+
 
       //________________ CONTROLS
 
@@ -188,7 +192,7 @@
         this.head.body.velocity.x -= 10;
         this.stopHead = false;
       }
-      
+
       this.crate2pos = {
           x: this.crate2.body.x,
           y: this.crate2.body.y
@@ -366,6 +370,9 @@
       }
 
       this.distanceText.setText('Distance travelled: ' + this.distance);
+    },
+    startClick: function() {
+      this.game.state.start('play');
     }
   };
 
