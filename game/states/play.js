@@ -96,6 +96,15 @@
           this.head.body.velocity.x -=10;
         }
       }
+      //UPDATE Y POSITION OF HEAD BASED ON X
+      //(x - xm)2 + (y - ym)2 = r2
+      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v 
+      var xm = this.crate2.x;
+      var ym = this.crate2.y;
+      var x = this.head.x;
+      var y = Math.cos(this.toDegrees(x/5));
+      console.log(y+"asdaksdna"+((x-this.game.width)/5));
+      this.head.body.y = y;
 
 
       //Play Animations based on
@@ -112,7 +121,7 @@
           this.crate2.animations.stop();
           this.facing = 'idle';
         }
-      }
+      } 
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3;
@@ -125,6 +134,7 @@
     rotatePlate: function() {
       this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
       this.iceplate.body.angle = this.iceplateAngle;
+
     },
     drawBezier: function() {
       var accuracy = 1 / this.halsDetails, //this'll give the bezier 100 segments
@@ -162,6 +172,9 @@
         var y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
 
         return {x: x, y: y};
+      },
+     toDegrees: function(angle) {
+        return angle * (180 / Math.PI);
       }
   };
 
