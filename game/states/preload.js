@@ -16,6 +16,10 @@ Preload.prototype = {
 
 
     this.load.image('mountain-graphic', 'assets/mountains.png');
+    this.load.image('cloudz-01', 'assets/cloudz_Top.png');
+    this.load.image('cloudz-02', 'assets/cloudz_Bottom.png');
+
+
 
     this.load.image('water-01', 'assets/water-01.png');
     this.load.image('water-02', 'assets/water-02.png');
@@ -26,7 +30,7 @@ Preload.prototype = {
     this.load.image('mountain-05', 'assets/mountains/mountain-05.png');*/
 
     this.load.image('crate', 'assets/iceplate.png');
-    this.load.image('head', 'assets/head_new.png');
+    this.load.image('head', 'assets/head-08.png');
     this.load.spritesheet('giraffe', 'assets/giraffe_sprite_03.png', 200.25,245.25);
 
   },
