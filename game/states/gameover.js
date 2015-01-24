@@ -14,6 +14,30 @@ GameOver.prototype = {
   },
   create: function () {
     var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
+
+    this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
+    //this.mountains.scale.setTo(0.2, 0.2);
+    this.mountains.anchor.setTo(0, 1);
+
+
+    this.cloudz1 = this.game.add.tileSprite(0, this.game.height-400, this.game.width, 170, "cloudz-01");
+    this.cloudz1.anchor.setTo(0, 1);
+    this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130, this.game.width, 170, "cloudz-02");
+    this.cloudz2.anchor.setTo(0, 1);
+
+    this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
+    this.water1.anchor.setTo(0, 1);
+
+    this.frozenGiraffe = this.game.add.sprite(this.game.width * 0.3, this.game.height* 0.3 , "frozenGiraffe");
+    this.game.add.tween(this.frozenGiraffe).to({y:this.frozenGiraffe.position.y + 10}, 3400, Phaser.Easing.Bounce.Out, true, 0, 1000, true);
+
+    this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
+    this.water2.anchor.setTo(0,1);
+
+
+
+    //this.frozenGiraffe .body.motionState = Phaser.Physics.P2.Body.STATIC;
+
     this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
