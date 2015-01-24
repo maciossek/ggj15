@@ -31,7 +31,7 @@ Preload.prototype = {
 
     this.load.image('crate', 'assets/iceplate.png');
     this.load.image('head', 'assets/head-08.png');
-    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_03.png', 200.25,245.25);
+    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_04.png', 200.25,245.25);
 
   },
   create: function() {
