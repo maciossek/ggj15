@@ -30,13 +30,13 @@
       /*--------FIGURES--------*/
       //giraffe Variables
       this.crate2 = null;
-      this.crate2angleMultiplier = 0.15;
+      this.crate2angleMultiplier = 0.005;
       this.facing = 'left';
       //head Variables
       this.head = null;
       this.headPosY = 100;
-      this.maxHeadDistance = 300;
-      this.headAngleMultiplier = 0.2;
+      this.maxHeadDistance = 470;
+      this.headAngleMultiplier = 0.009;
       this.stopHead = true;
 
 
@@ -263,7 +263,7 @@
 
       if (this.cursors.left.isDown || ((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
-        if(this.distanceHeadCrate < 500) {
+        if(this.distanceHeadCrate < this.maxHeadDistance) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x -= this.headVelocity;
           this.stopHead = false;
@@ -276,7 +276,7 @@
 
       } else if (this.cursors.right.isDown || ((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
-        if(this.distanceHeadCrate < 500) {
+        if(this.distanceHeadCrate < this.maxHeadDistance) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x += this.headVelocity;
           this.stopHead = false;
@@ -291,9 +291,9 @@
       }
       if(this.stopHead) {
 
-        if(this.distanceHeadCrate > 500 && this.headPos.x < this.crate2pos.x) {
+        if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x < this.crate2pos.x) {
           this.head.body.velocity.x +=10;
-        } else if(this.distanceHeadCrate > 500 && this.headPos.x > this.crate2pos.x) {
+        } else if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x > this.crate2pos.x) {
           this.head.body.velocity.x -=10;
         } else {
             if(this.head.body.velocity.x < 0) {
@@ -354,7 +354,8 @@
       }
     },
     rotatePlate: function() {
-      this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
+      this.iceplateAngle += (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
+      //this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
       this.iceplate.body.angle = this.iceplateAngle;
       this.iceplateGraphic.angle = this.iceplateAngle;
 
