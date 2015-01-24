@@ -25,9 +25,9 @@ Preload.prototype = {
     this.load.image('mountain-04', 'assets/mountains/mountain-04.png');
     this.load.image('mountain-05', 'assets/mountains/mountain-05.png');*/
 
-    this.load.image('crate', 'assets/crate.png');
-    this.load.image('head', 'assets/head.jpg');
-    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_width.png', 170, 210);
+    this.load.image('crate', 'assets/iceplate.png');
+    this.load.image('head', 'assets/head_new.png');
+    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_03.png', 200.25,245.25);
 
   },
   create: function() {
@@ -37,7 +37,7 @@ Preload.prototype = {
   },
   update: function() {
     if(!!this.ready) {
-      this.game.state.start('menu');
+      this.game.state.start('play');
     }
   },
   onLoadComplete: function() {

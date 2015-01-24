@@ -4,6 +4,7 @@
   Play.prototype = {
     preload: function() {
       this.iceplate = null;
+      this.iceplateGraphic = null;
       this.iceplateAngle = 0;
 
       /*---------AMBIENTE-------*/
@@ -22,6 +23,8 @@
       this.facing = 'left';
       //head Variables
       this.head = null;
+      this.headPosY = 100;
+      this.maxHeadDistance = 250;
       this.headAngleMultiplier = 0.1;
       this.stopHead = true;
 
@@ -37,10 +40,15 @@
       this.game.physics.p2.gravity.y = 250;
       this.game.physics.p2.friction = 0.00001;
 
+      this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
+      //this.mountains.scale.setTo(0.2, 0.2);
+      this.mountains.anchor.setTo(0, 1);
+
+      
       for(var i=0; i<this.halsDetails; i++) {
         this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
-        this.circles[i].lineStyle(1, 0xf47f4d);
-        this.circles[i].beginFill(0xf47f4d, 1);
+        this.circles[i].lineStyle(1, 0xf4c54d);
+        this.circles[i].beginFill(0xf4c54d, 1);
 
         this.circles[i].drawCircle(0, 0, 50);
         this.circles[i].endFill();
@@ -55,24 +63,37 @@
       this.mountains.create(1720+1606, 0, 'mountain-03');
       this.mountains.create(1720+1606+1301, 0, 'mountain-04');
       this.mountains.create(1720+1606+1301+1416, 0, 'mountain-05');*/
-      this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
-      //this.mountains.scale.setTo(0.2, 0.2);
-      this.mountains.anchor.setTo(0, 1);
+      
 
 
       this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
-      this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
+
       this.water1.anchor.setTo(0, 1);
-      this.water2.anchor.setTo(0,1);
+      
 
 
       //SETUP Iceplate
-      this.iceplate = this.game.add.sprite(this.game.width/2, this.game.height-130, "crate");
+      this.iceplate = this.game.add.sprite(this.game.width/2, this.game.height-60, "crate");
       this.iceplate.anchor.setTo(0.5, 1);
-      this.iceplate.scale.setTo(3, 1);
+      //this.iceplate.scale.setTo(3, 1);
       this.iceplate.friction = 0.0005;
+      this.iceplate.visible = false;
+
+      this.iceplateGraphic = this.game.add.sprite(this.game.width/2, this.game.height-90, "crate");
+      this.iceplateGraphic.anchor.setTo(0.5, 1);
+      this.iceplateGraphic.y += 70;
+
+      this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
+      this.water2.anchor.setTo(0,1);
+
+
+
+
       this.game.physics.p2.enable(this.iceplate);
+      
       this.iceplate.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
+      this.iceplate.hitArea = new Phaser.Rectangle(0, 0, 20, 20);
+      //this.iceplate.body.setSize(100, 50, 50, 25);
 
 
       //Setup Giraffe
@@ -80,14 +101,23 @@
       this.crate2.anchor.setTo(0.5, 1);
 
       this.game.physics.p2.enable(this.crate2);
-      this.crate2animationLeft = this.crate2.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 8, true);
-      this.crate2animationRight = this.crate2.animations.add('right', [7, 6, 5, 4, 3, 2, 1, 0], 8, true);
+
+      var framesLeft = [];
+      for (i=0;i<47;i++) {
+        framesLeft.push(i);
+      }
+      var framesRight = [];
+      for (i=46;i>=0;i--) {
+        framesRight.push(i);
+      }
+      this.crate2animationLeft = this.crate2.animations.add('left', framesLeft, 23, true);
+      this.crate2animationRight = this.crate2.animations.add('right', framesRight, 23, true);
       this.crate2animationTurn = this.crate2.animations.add('turn', [4], 20, true);
 
 
 
       //Setup Head
-      this.head = this.game.add.sprite(this.game.width/2, 50, "head");
+      this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
 
       this.game.physics.p2.enable(this.head);
       this.head.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
@@ -112,19 +142,34 @@
       this.water2.tilePosition.x -=1.2;
       //________________ CONTROLS
       if (this.cursors.left.isDown) {
-        this.head.body.velocity.x -= 10;
 
-        this.stopHead = false;
+        if(this.crate2.body.x-this.head.body.x < (this.maxHeadDistance)) {
+          this.head.body.velocity.x -= 10;
+          this.stopHead = false;
+        } else {
+          this.head.body.velocity.x -= 5;
+          this.stopHead = true;
+        }
+
+       
       } else if (this.cursors.right.isDown) {
-        this.head.body.velocity.x += 10;
 
-        this.stopHead = false;
+        if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance) {
+          console.log(this.crate2.body.x-this.head.body.x);
+          this.head.body.velocity.x += 10;
+          this.stopHead = false;
+        } else {
+          this.head.body.velocity.x += 5;
+          this.stopHead = true;
+        }
+      } else {
+        this.stopHead = true;
       }
       if(this.stopHead) {
         if(this.head.body.velocity.x < 0) {
-          this.head.body.velocity.x +=10;
+          this.head.body.velocity.x +=5;
         } else if(this.head.body.velocity.x > 0) {
-          this.head.body.velocity.x -=10;
+          this.head.body.velocity.x -=5;
         }
       }
       //UPDATE Y POSITION OF HEAD BASED ON X
@@ -135,7 +180,7 @@
       var x = Math.abs(this.head.body.x-this.game.width/2);
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
       
-      this.head.body.y = x*x/300+50;
+      this.head.body.y = x*x/300+this.headPosY;
 
  
       //Play Animations based on
@@ -154,8 +199,8 @@
         }
       } 
 
-      this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3;
-      this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3;
+      this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3+5;
+      this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3+5;
 
       this.rotatePlate();
     },
@@ -165,6 +210,7 @@
     rotatePlate: function() {
       this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
       this.iceplate.body.angle = this.iceplateAngle;
+      this.iceplateGraphic.angle = this.iceplateAngle;
 
     },
     drawBezier: function() {
