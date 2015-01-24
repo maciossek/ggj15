@@ -56,6 +56,8 @@
       this.distance = 0;
       this.distanceText = '';
 
+      this.gameStarted = false;
+
       this.cursors = null;
     },
     create: function() {
@@ -152,7 +154,9 @@
       this.head.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
 
 
+      if (this.gameStarted) {
 
+      }
       // Add timer & score
       this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, { font: "24px Arial", fill: "#333333" });
       this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, { font: "24px Arial", fill: "#333333" });
@@ -173,6 +177,7 @@
       }
     },
     update: function() {
+
       this.drawBezier();
       this.mountains.tilePosition.x -= 0.3;
       this.water1.tilePosition.x -=1.5;
@@ -183,11 +188,13 @@
 
       //________________ CONTROLS
       if((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown) {
+        this.gameStarted = true;
         console.log('left');
         this.head.body.velocity.x += 10;
         this.stopHead = false;
 
       } else if((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown){
+        this.gameStarted = true;
         console.log('right');
         this.head.body.velocity.x -= 10;
         this.stopHead = false;
@@ -210,7 +217,7 @@
       console.log(this.headVelocity);
 
       if (this.cursors.left.isDown) {
-
+        this.gameStarted = true;
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x -= this.headVelocity;
@@ -223,7 +230,7 @@
 
 
       } else if (this.cursors.right.isDown) {
-
+        this.gameStarted = true;
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x += this.headVelocity;
@@ -360,16 +367,22 @@
         return angle * (Math.PI / 180);
     },
     updateTimer: function() {
-      this.timer++;
-      this.timerText.setText('Time: ' + this.timer);
-    },
-    updateDistance: function() {
-      this.distance = this.distance + 1;
-      if (this.iceplateAngle > 0) {
-        this.distance = this.distance + 0.5 * Math.abs(this.iceplateAngle);
+      if(this.gameStarted) {
+        this.timer++;
+        this.timerText.setText('Time: ' + this.timer);
       }
 
-      this.distanceText.setText('Distance travelled: ' + this.distance);
+
+    },
+    updateDistance: function() {
+      if(this.gameStarted) {
+        this.distance = this.distance + 1;
+        if (this.iceplateAngle > 0) {
+          this.distance = this.distance + 0.5 * Math.abs(this.iceplateAngle);
+        }
+
+        this.distanceText.setText('Distance travelled: ' + this.distance);
+      }
     },
     startClick: function() {
       this.game.state.start('play');
