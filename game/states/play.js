@@ -55,7 +55,7 @@
       // Distance
       this.distance = 0;
       this.distanceText = '';
-
+      this.animationSpeed;
       this.dialogue;
       this.dialogueTween;
       this.gameStarted = false;
@@ -162,7 +162,7 @@
       // Add timer & score
       var style = { font: '24px Slabo', fill: '#ffffff', align: 'center'};
       this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, style);
-      this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, style);
+      this.distanceText = this.game.add.text(15, 40, "Steps: " + this.distance, style);
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
@@ -303,6 +303,8 @@
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
 
+      this.animationSpeed = this.crate2animationRight.speed;
+
       this.rotatePlate();
 
       this.updateDistance();
@@ -385,12 +387,8 @@
     },
     updateDistance: function() {
       if(this.gameStarted) {
-        this.distance = this.distance + 1;
-        if (this.iceplateAngle > 0) {
-          this.distance = this.distance + 0.5 * Math.abs(this.iceplateAngle);
-        }
-
-        this.distanceText.setText('Distance travelled: ' + this.distance);
+        this.distance = this.distance +1 * (this.animationSpeed/1000);
+        this.distanceText.setText('Steps: ' + Math.round(this.distance));
       }
     },
     startClick: function() {
