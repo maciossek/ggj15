@@ -261,7 +261,7 @@
       this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
 
 
-      if (this.cursors.left.isDown || ((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown)) {
+      if (this.cursors.left.isDown || ((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
@@ -274,7 +274,7 @@
         }
 
 
-      } else if (this.cursors.right.isDown || ((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown)) {
+      } else if (this.cursors.right.isDown || ((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
