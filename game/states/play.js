@@ -30,17 +30,17 @@
       /*--------FIGURES--------*/
       //giraffe Variables
       this.crate2 = null;
-      this.crate2angleMultiplier = 0.005;
+      this.crate2angleMultiplier = 0.0005;
       this.facing = 'left';
       //head Variables
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.009;
+      this.headAngleMultiplier = 0.002;
       this.stopHead = true;
 
 
-      this.headVelocityConstant = 10;
+      this.headVelocityConstant = 15;
       this.headVelocity = this.headVelocityConstant;
       this.headVelocityMultiplier = 0.96;
 
@@ -75,7 +75,7 @@
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 900;
-      this.game.physics.p2.friction = 0.00001;
+      this.game.physics.p2.friction = 0.0001;
 
 
 
@@ -354,7 +354,8 @@
       }
     },
     rotatePlate: function() {
-      this.iceplateAngle += (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
+      this.iceplateAngleMod = 1;
+      this.iceplateAngle += ((this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier)*this.iceplateAngleMod;
       //this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
       this.iceplate.body.angle = this.iceplateAngle;
       this.iceplateGraphic.angle = this.iceplateAngle;
