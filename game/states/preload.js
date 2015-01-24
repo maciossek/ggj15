@@ -14,6 +14,17 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
     this.load.image('yeoman', 'assets/yeoman-logo.png');
 
+
+    this.load.image('mountain-graphic', 'assets/mountains.png');
+
+    this.load.image('water-01', 'assets/water-01.png');
+    this.load.image('water-02', 'assets/water-02.png');
+   /* this.load.image('mountain-01', 'assets/mountains/mountain-01.png');
+    this.load.image('mountain-02', 'assets/mountains/mountain-02.png');
+    this.load.image('mountain-03', 'assets/mountains/mountain-03.png');
+    this.load.image('mountain-04', 'assets/mountains/mountain-04.png');
+    this.load.image('mountain-05', 'assets/mountains/mountain-05.png');*/
+
     this.load.image('crate', 'assets/crate.png');
     this.load.image('head', 'assets/head.jpg');
     this.load.spritesheet('giraffe', 'assets/giraffe_sprite_width.png', 170, 210);
@@ -21,6 +32,8 @@ Preload.prototype = {
   },
   create: function() {
     this.asset.cropEnabled = false;
+    this.game.stage.backgroundColor = '#80E9DD';
+
   },
   update: function() {
     if(!!this.ready) {
