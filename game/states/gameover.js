@@ -10,6 +10,7 @@ GameOver.prototype = {
     this.bestSteps = Math.round(localStorage.getItem('bestDistance'));
 
 
+
     if (this.currentScore > this.bestScore) {
       localStorage.setItem('bestScore', this.currentScore);
     }
@@ -51,6 +52,11 @@ GameOver.prototype = {
 
     this.timerText = this.game.add.text(15, 20, "Time: " + this.currentScore, style);
     this.distanceText = this.game.add.text(this.game.width - 110, 20, "Steps: " + this.steps, style);
+
+    /*this.distanceTextTween = this.game.add.tween(this.dialogue);
+    this.distanceTextTween.to({ alpha: 0, y: 20 }, 500, Phaser.Easing.Back.Out, true, 10);
+    this.distanceTextTween.start();
+    */
 
     this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You lasted ' + localStorage.getItem('score') + ' Seconds', { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
