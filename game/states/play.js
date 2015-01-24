@@ -8,7 +8,7 @@
       this.iceplateAngle = 0;
 
       /*---------AMBIENTE-------*/
-      //mountains 
+      //mountains
       this.mountains = null;
 
       //water
@@ -35,7 +35,7 @@
 
       this.cursors = null;
     },
-    create: function() { 
+    create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 250;
       this.game.physics.p2.friction = 0.00001;
@@ -44,7 +44,7 @@
       //this.mountains.scale.setTo(0.2, 0.2);
       this.mountains.anchor.setTo(0, 1);
 
-      
+
       for(var i=0; i<this.halsDetails; i++) {
         this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
         this.circles[i].lineStyle(1, 0xf4c54d);
@@ -57,19 +57,19 @@
       //SETUP Mountains
       //bgtile = game.add.tileSprite(0, 0, game.stage.bounds.width, game.cache.getImage('bgtile').height, 'bgtile');
 
-  
+
 
       /*this.mountains.create(0, 0, 'mountain-02');
       this.mountains.create(1720+1606, 0, 'mountain-03');
       this.mountains.create(1720+1606+1301, 0, 'mountain-04');
       this.mountains.create(1720+1606+1301+1416, 0, 'mountain-05');*/
-      
+
 
 
       this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
 
       this.water1.anchor.setTo(0, 1);
-      
+
 
 
       //SETUP Iceplate
@@ -90,7 +90,7 @@
 
 
       this.game.physics.p2.enable(this.iceplate);
-      
+
       this.iceplate.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
       this.iceplate.hitArea = new Phaser.Rectangle(0, 0, 20, 20);
       //this.iceplate.body.setSize(100, 50, 50, 25);
@@ -141,6 +141,17 @@
       this.water1.tilePosition.x -=1.2;
       this.water2.tilePosition.x -=1.2;
       //________________ CONTROLS
+      if((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown) {
+        console.log('left');
+        this.head.body.velocity.x += 10;
+        this.stopHead = false;
+
+      } else if((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown){
+        console.log('right');
+        this.head.body.velocity.x -= 10;
+        this.stopHead = false;
+      }
+
       if (this.cursors.left.isDown) {
 
         if(this.crate2.body.x-this.head.body.x < (this.maxHeadDistance)) {
@@ -151,7 +162,7 @@
           this.stopHead = true;
         }
 
-       
+
       } else if (this.cursors.right.isDown) {
 
         if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance) {
@@ -174,15 +185,15 @@
       }
       //UPDATE Y POSITION OF HEAD BASED ON X
       //(x - xm)2 + (y - ym)2 = r2
-      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v 
+      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v
       var xm = this.crate2.x;
       var ym = this.crate2.y;
       var x = Math.abs(this.head.body.x-this.game.width/2);
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
-      
+
       this.head.body.y = x*x/300+this.headPosY;
 
- 
+
       //Play Animations based on
       if(this.iceplateAngle > 0) {
 
@@ -197,7 +208,7 @@
           this.crate2.animations.stop();
           this.facing = 'idle';
         }
-      } 
+      }
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3+5;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3+5;
