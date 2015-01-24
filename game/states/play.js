@@ -9,11 +9,11 @@
 
       //giraffe Variables
       this.crate2 = null;
-      this.crate2angleMultiplier = 0.2;
+      this.crate2angleMultiplier = 0.1;
       this.facing = 'left';
       //head Variables
       this.head = null;
-      this.headAngleMultiplier = 0.2;
+      this.headAngleMultiplier = 0.1;
       this.stopHead = true;
 
       //giraffe hals
@@ -101,12 +101,12 @@
       // y' = (x-u) sin(beta) + (y-v) cos(beta) + v 
       var xm = this.crate2.x;
       var ym = this.crate2.y;
-      var x = this.head.x;
-      var y = Math.cos(this.toDegrees(x/5));
-      console.log(y+"asdaksdna"+((x-this.game.width)/5));
-      this.head.body.y = y;
+      var x = Math.abs(this.head.body.x-this.game.width/2);
+      var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
+      
+      this.head.body.y = x*x/300+50;
 
-
+ 
       //Play Animations based on
       if(this.iceplateAngle > 0) {
 
@@ -175,6 +175,9 @@
       },
      toDegrees: function(angle) {
         return angle * (180 / Math.PI);
+      },
+     toRadians: function (angle) {
+        return angle * (Math.PI / 180);
       }
   };
 
