@@ -246,19 +246,6 @@
       this.shadow.alpha = 1-Math.abs(this.crate2.x - this.game.width/2)/(this.crate2.width*0.5);
 
       //________________ CONTROLS
-      if((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown) {
-        this.setStart();
-        console.log('left');
-        this.head.body.velocity.x += 10;
-        this.stopHead = false;
-
-      } else if((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown){
-        this.setStart();
-        console.log('right');
-        this.head.body.velocity.x -= 10;
-        this.stopHead = false;
-      }
-
       this.crate2pos = {
           x: this.crate2.body.x,
           y: this.crate2.body.y
@@ -274,7 +261,7 @@
       this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
 
 
-      if (this.cursors.left.isDown) {
+      if (this.cursors.left.isDown || ((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
@@ -287,7 +274,7 @@
         }
 
 
-      } else if (this.cursors.right.isDown) {
+      } else if (this.cursors.right.isDown || ((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown)) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
