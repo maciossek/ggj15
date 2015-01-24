@@ -29,12 +29,23 @@
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 300;
-      this.headAngleMultiplier = 0.1;
+      this.headAngleMultiplier = 0.2;
       this.stopHead = true;
+
+
+      this.headVelocityConstant = 10;
+      this.headVelocity = this.headVelocityConstant;
+      this.headVelocityMultiplier = 0.96;
 
       //giraffe hals
       this.circles=[];
       this.halsDetails = 100;
+
+
+      this.deltaHeadCrate = null;
+      this.headPos = null;
+      this.crate2pos = null;
+      this.distanceHeadCrate = null;
 
 
       // Timer
@@ -49,7 +60,7 @@
     },
     create: function() { 
       this.game.physics.startSystem(Phaser.Physics.P2JS);
-      this.game.physics.p2.gravity.y = 250;
+      this.game.physics.p2.gravity.y = 900;
       this.game.physics.p2.friction = 0.00001;
 
       this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
@@ -167,56 +178,77 @@
       this.cloudz2.tilePosition.x -=0.6;
 
       //________________ CONTROLS
-      if (this.cursors.left.isDown) {
-        var crate2pos = {
+      this.crate2pos = {
           x: this.crate2.body.x,
           y: this.crate2.body.y
         }
-        var headPosX = {
-          x: this.head.body.x,
-          y: this.head.body.y
-        }
-        if(this.crate2.body.x-this.head.body.x < (this.maxHeadDistance) && (this.head.body.x-this.game.width/2) > (-this.maxHeadDistance/2)) {
-          this.head.body.velocity.x -= 10;
+      this.headPos = {
+        x: this.head.body.x,
+        y: this.head.body.y
+      }
+      this.deltaHeadCrate = {
+        x: this.crate2pos.x-this.headPos.x,
+        y: this.crate2pos.y-this.headPos.y
+      }
+      this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
+      
+      console.log(this.headVelocity);
+
+      if (this.cursors.left.isDown) {
+
+        if(this.distanceHeadCrate < 500) {
+          this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
+          this.head.body.velocity.x -= this.headVelocity;
           this.stopHead = false;
         } else {
           //this.head.body.velocity.x -= 5;
           this.stopHead = true;
+          this.headVelocity = this.headVelocityConstant;
         }
 
        
       } else if (this.cursors.right.isDown) {
 
-        if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance && (this.head.body.x-this.game.width/2) < (this.maxHeadDistance/2)) {
-        
-          this.head.body.velocity.x += 10;
+        if(this.distanceHeadCrate < 500) {
+          this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
+          this.head.body.velocity.x += this.headVelocity;
           this.stopHead = false;
         } else {
           //this.head.body.velocity.x += 5;
+          this.headVelocity = this.headVelocityConstant;
           this.stopHead = true;
         }
       } else {
         this.stopHead = true;
+        this.headVelocity = this.headVelocityConstant;
       }
       if(this.stopHead) {
-        if(this.head.body.velocity.x < 0) {
-          this.head.body.velocity.x +=5;
-        } else if(this.head.body.velocity.x > 0) {
-          this.head.body.velocity.x -=5;
+        
+        if(this.distanceHeadCrate > 500 && this.headPos.x < this.crate2pos.x) {
+          this.head.body.velocity.x +=10;
+        } else if(this.distanceHeadCrate > 500 && this.headPos.x > this.crate2pos.x) {
+          this.head.body.velocity.x -=10;
+        } else {
+            if(this.head.body.velocity.x < 0) {
+              this.head.body.velocity.x +=5;
+            } else if(this.head.body.velocity.x > 0) {
+              this.head.body.velocity.x -=5;
+            }
         }
+        
       }
 
       this.rotateHead();
       //UPDATE Y POSITION OF HEAD BASED ON X
       //(x - xm)2 + (y - ym)2 = r2
       // y' = (x-u) sin(beta) + (y-v) cos(beta) + v
-      var xm = this.crate2.x;
-      var ym = this.crate2.y;
-      var x = Math.abs(this.head.body.x-this.game.width/2);
+      var xm = this.crate2.x-this.game.width/2;
+      var ym = this.crate2.y-this.game.width/2;
+      var x = this.head.body.x-this.game.width/2 + xm;
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
 
       
-      this.head.body.y = x*x/300+this.headPosY;
+      this.head.body.y = x*x*0.001+this.headPosY;
 
 
 
