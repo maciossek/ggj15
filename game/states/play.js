@@ -6,7 +6,16 @@
       this.iceplate = null;
       this.iceplateAngle = 0;
 
+      /*---------AMBIENTE-------*/
+      //mountains 
+      this.mountains = null;
 
+      //water
+      this.water1 = null;
+      this.water2 = null;
+
+
+      /*--------FIGURES--------*/
       //giraffe Variables
       this.crate2 = null;
       this.crate2angleMultiplier = 0.1;
@@ -23,7 +32,7 @@
 
       this.cursors = null;
     },
-    create: function() {
+    create: function() { 
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 250;
       this.game.physics.p2.friction = 0.00001;
@@ -37,10 +46,29 @@
         this.circles[i].endFill();
       }
 
+      //SETUP Mountains
+      //bgtile = game.add.tileSprite(0, 0, game.stage.bounds.width, game.cache.getImage('bgtile').height, 'bgtile');
+
+  
+
+      /*this.mountains.create(0, 0, 'mountain-02');
+      this.mountains.create(1720+1606, 0, 'mountain-03');
+      this.mountains.create(1720+1606+1301, 0, 'mountain-04');
+      this.mountains.create(1720+1606+1301+1416, 0, 'mountain-05');*/
+      this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
+      //this.mountains.scale.setTo(0.2, 0.2);
+      this.mountains.anchor.setTo(0, 1);
+
+
+      this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
+      this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
+      this.water1.anchor.setTo(0, 1);
+      this.water2.anchor.setTo(0,1);
+
 
       //SETUP Iceplate
-      this.iceplate = this.game.add.sprite(this.game.width/2, 600, "crate");
-      this.iceplate.anchor.setTo(0.5, 0.5);
+      this.iceplate = this.game.add.sprite(this.game.width/2, this.game.height-130, "crate");
+      this.iceplate.anchor.setTo(0.5, 1);
       this.iceplate.scale.setTo(3, 1);
       this.iceplate.friction = 0.0005;
       this.game.physics.p2.enable(this.iceplate);
@@ -48,7 +76,8 @@
 
 
       //Setup Giraffe
-      this.crate2 = this.game.add.sprite(this.game.width/2, 300, "giraffe");
+      this.crate2 = this.game.add.sprite(this.game.width/2, this.game.height*0.5, "giraffe");
+      this.crate2.anchor.setTo(0.5, 1);
 
       this.game.physics.p2.enable(this.crate2);
       this.crate2animationLeft = this.crate2.animations.add('left', [0, 1, 2, 3, 4, 5, 6, 7], 8, true);
@@ -78,7 +107,9 @@
     },
     update: function() {
       this.drawBezier();
-
+      this.mountains.tilePosition.x -= 0.5;
+      this.water1.tilePosition.x -=1.2;
+      this.water2.tilePosition.x -=1.2;
       //________________ CONTROLS
       if (this.cursors.left.isDown) {
         this.head.body.velocity.x -= 10;
