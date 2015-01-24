@@ -56,6 +56,8 @@
       this.distance = 0;
       this.distanceText = '';
 
+      this.dialogue;
+      this.dialogueTween;
       this.gameStarted = false;
 
       this.cursors = null;
@@ -158,13 +160,20 @@
 
       }
       // Add timer & score
-      this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, { font: "24px Arial", fill: "#333333" });
-      this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, { font: "24px Arial", fill: "#333333" });
+      var style = { font: '24px Slabo', fill: '#ffffff', align: 'center'};
+      this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, style);
+      this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, style);
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
       this.replayButton = this.game.add.button(this.game.width, 0, 'replayButton', this.startClick, this);
       this.replayButton.anchor.setTo(0.5,0.5);
+
+      // Replay
+      this.dialogue = this.game.add.sprite(this.game.width/2 + 110, 100, 'dialogue');
+      this.dialogueTween = this.game.add.tween(this.dialogue);
+      this.game.physics.p2.enable(this.dialogue);
+      this.dialogue.body.motionState = Phaser.Physics.P2.Body.STATIC;
 
 
       //________________ CONTROLS
@@ -188,13 +197,13 @@
 
       //________________ CONTROLS
       if((this.game.input.x > this.game.width/2) && this.game.input.pointer1.isDown) {
-        this.gameStarted = true;
+        this.setStart();
         console.log('left');
         this.head.body.velocity.x += 10;
         this.stopHead = false;
 
       } else if((this.game.input.x < this.game.width/2) && this.game.input.pointer1.isDown){
-        this.gameStarted = true;
+        this.setStart();
         console.log('right');
         this.head.body.velocity.x -= 10;
         this.stopHead = false;
@@ -217,7 +226,7 @@
       console.log(this.headVelocity);
 
       if (this.cursors.left.isDown) {
-        this.gameStarted = true;
+        this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x -= this.headVelocity;
@@ -230,7 +239,7 @@
 
 
       } else if (this.cursors.right.isDown) {
-        this.gameStarted = true;
+        this.setStart();
         if(this.distanceHeadCrate < 500) {
           this.headVelocity = Math.sqrt(this.headVelocity*this.headVelocity*this.headVelocityMultiplier);
           this.head.body.velocity.x += this.headVelocity;
@@ -386,6 +395,11 @@
     },
     startClick: function() {
       this.game.state.start('play');
+    },
+    setStart: function() {
+      this.gameStarted = true;
+      this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
+      this.dialogueTween.start();
     }
   };
 

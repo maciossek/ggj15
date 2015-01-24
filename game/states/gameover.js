@@ -13,7 +13,7 @@ GameOver.prototype = {
 
   },
   create: function () {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
+    var style = { font: '65px Slabo', fill: '#ffffff', align: 'center'};
 
     this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
     //this.mountains.scale.setTo(0.2, 0.2);
