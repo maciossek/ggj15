@@ -11,7 +11,7 @@
       this.icePlateY = 90;
 
       /*---------AMBIENTE-------*/
-      //mountains 
+      //mountains
       this.mountains = null;
 
       //clouds
@@ -72,12 +72,12 @@
 
       this.cursors = null;
     },
-    create: function() { 
+    create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 900;
       this.game.physics.p2.friction = 0.00001;
 
-     
+
 
       this.mountains = this.game.add.tileSprite(0, this.game.height-117-this.moveBackgroundConstant, this.game.width, 170, "mountain-graphic");
       //this.mountains.scale.setTo(0.2, 0.2);
@@ -89,19 +89,19 @@
       this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130-this.moveBackgroundConstant, this.game.width, 170, "cloudz-02");
       this.cloudz2.anchor.setTo(0, 1);
 
-      
-      
+
+
 
       //SETUP Mountains
       //bgtile = game.add.tileSprite(0, 0, game.stage.bounds.width, game.cache.getImage('bgtile').height, 'bgtile');
 
-  
+
 
       /*this.mountains.create(0, 0, 'mountain-02');
       this.mountains.create(1720+1606, 0, 'mountain-03');
       this.mountains.create(1720+1606+1301, 0, 'mountain-04');
       this.mountains.create(1720+1606+1301+1416, 0, 'mountain-05');*/
-      
+
 
 
       this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, this.waterHeight, "water-01");
@@ -123,7 +123,7 @@
       }
       //this.waterWaves = this.game.add.sprite(0*100, this.game.height-this.moveBackgroundConstant,'water-waves');
       //this.waterWavesAnimations = this.waterWaves.animations.add('water-waves',framesLeft, 23, true);
-     
+
      /* var framesLeft = [];
       for (i=0;i<47;i++) {
         framesLeft.push(i);
@@ -168,7 +168,7 @@
 
 
       this.game.physics.p2.enable(this.iceplate);
-      
+
       this.iceplate.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
       this.iceplate.hitArea = new Phaser.Rectangle(0, 0, 20, 20);
       //this.iceplate.body.setSize(100, 50, 50, 25);
@@ -180,7 +180,7 @@
 
       this.game.physics.p2.enable(this.crate2);
 
-      
+
       this.crate2animationLeft = this.crate2.animations.add('left', framesLeft, 23, true);
       this.crate2animationRight = this.crate2.animations.add('right', framesRight, 23, true);
       this.crate2animationTurn = this.crate2.animations.add('turn', [4], 20, true);
@@ -272,7 +272,7 @@
         y: this.crate2pos.y-this.headPos.y
       }
       this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
-      
+
 
       if (this.cursors.left.isDown) {
         this.setStart();
@@ -286,7 +286,7 @@
           this.headVelocity = this.headVelocityConstant;
         }
 
-       
+
       } else if (this.cursors.right.isDown) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
@@ -303,7 +303,7 @@
         this.headVelocity = this.headVelocityConstant;
       }
       if(this.stopHead) {
-        
+
         if(this.distanceHeadCrate > 500 && this.headPos.x < this.crate2pos.x) {
           this.head.body.velocity.x +=10;
         } else if(this.distanceHeadCrate > 500 && this.headPos.x > this.crate2pos.x) {
@@ -315,7 +315,7 @@
               this.head.body.velocity.x -=5;
             }
         }
-        
+
       }
 
       this.rotateHead();
@@ -327,7 +327,7 @@
       var x = this.head.body.x-this.game.width/2 + xm;
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
 
-      
+
       this.head.body.y = x*x*0.001+this.headPosY;
 
 
@@ -444,9 +444,12 @@
       this.game.state.start('play');
     },
     setStart: function() {
-      this.gameStarted = true;
-      this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
-      this.dialogueTween.start();
+      if(!this.gameStarted) {
+        this.gameStarted = true;
+        this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
+        this.dialogueTween.start();
+      }
+
     }
   };
 
