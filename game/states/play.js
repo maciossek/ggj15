@@ -3,9 +3,12 @@
   function Play() {}
   Play.prototype = {
     preload: function() {
+      this.moveBackgroundConstant = 100;
+
       this.iceplate = null;
       this.iceplateGraphic = null;
       this.iceplateAngle = 0;
+      this.icePlateY = 90;
 
       /*---------AMBIENTE-------*/
       //mountains 
@@ -17,7 +20,11 @@
 
       //water
       this.water1 = null;
+      this.waterHeight = 220;
       this.water2 = null;
+      this.waterWaves = [];
+      this.waterWavesAnimations = [];
+      this.numWaterWaves = 30;
 
 
       /*--------FIGURES--------*/
@@ -47,6 +54,9 @@
       this.crate2pos = null;
       this.distanceHeadCrate = null;
 
+      //Giraffe Schatten
+      this.shadow = null;
+
 
       // Timer
       this.timer = 0;
@@ -63,25 +73,20 @@
       this.game.physics.p2.gravity.y = 900;
       this.game.physics.p2.friction = 0.00001;
 
-      this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
+     
+
+      this.mountains = this.game.add.tileSprite(0, this.game.height-117-this.moveBackgroundConstant, this.game.width, 170, "mountain-graphic");
       //this.mountains.scale.setTo(0.2, 0.2);
       this.mountains.anchor.setTo(0, 1);
 
 
-      this.cloudz1 = this.game.add.tileSprite(0, this.game.height-400, this.game.width, 170, "cloudz-01");
+      this.cloudz1 = this.game.add.tileSprite(0, this.game.height-400-this.moveBackgroundConstant, this.game.width, 170, "cloudz-01");
       this.cloudz1.anchor.setTo(0, 1);
-      this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130, this.game.width, 170, "cloudz-02");
+      this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130-this.moveBackgroundConstant, this.game.width, 170, "cloudz-02");
       this.cloudz2.anchor.setTo(0, 1);
 
       
-      for(var i=0; i<this.halsDetails; i++) {
-        this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
-        this.circles[i].lineStyle(1, 0xf4c54d);
-        this.circles[i].beginFill(0xf4c54d, 1);
-
-        this.circles[i].drawCircle(0, 0, 50);
-        this.circles[i].endFill();
-      }
+      
 
       //SETUP Mountains
       //bgtile = game.add.tileSprite(0, 0, game.stage.bounds.width, game.cache.getImage('bgtile').height, 'bgtile');
@@ -95,27 +100,67 @@
       
 
 
-      this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
-
+      this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, this.waterHeight, "water-01");
       this.water1.anchor.setTo(0, 1);
-      
+
+      var framesLeft = [];
+      for (i=0;i<47;i++) {
+        framesLeft.push(i);
+      }
+      var framesRight = [];
+      for (i=46;i>=0;i--) {
+        framesRight.push(i);
+      }
+
+      for(var i=0; i<this.numWaterWaves; i++) {
+        this.waterWaves[i] = this.game.add.sprite(this.game.width*Math.random(), this.game.height-Math.random()*this.waterHeight, 'water-waves');
+        this.waterWavesAnimations[i] = this.waterWaves[i].animations.add('justrun', framesLeft, 23, true);
+        this.waterWavesAnimations[i].play();
+      }
+      //this.waterWaves = this.game.add.sprite(0*100, this.game.height-this.moveBackgroundConstant,'water-waves');
+      //this.waterWavesAnimations = this.waterWaves.animations.add('water-waves',framesLeft, 23, true);
+     
+     /* var framesLeft = [];
+      for (i=0;i<47;i++) {
+        framesLeft.push(i);
+      }
+      var framesRight = [];
+      for (i=46;i>=0;i--) {
+        framesRight.push(i);
+      }
+      this.crate2animationLeft = this.crate2.animations.add('left', framesLeft, 23, true);
+      this.crate2animationRight = this.crate2.animations.add('right', framesRight, 23, true);
+      this.crate2animationTurn = this.crate2.animations.add('turn', [4], 20, true);*/
+      for(var i=0; i<this.halsDetails; i++) {
+        this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
+        this.circles[i].lineStyle(1, 0xf4c54d);
+        this.circles[i].beginFill(0xf4c54d, 1);
+
+        this.circles[i].drawCircle(0, 0, 50);
+        this.circles[i].endFill();
+      }
 
 
       //SETUP Iceplate
-      this.iceplate = this.game.add.sprite(this.game.width/2, this.game.height-60, "crate");
+      this.iceplate = this.game.add.sprite(this.game.width/2, this.game.height-this.icePlateY, "crate");
       this.iceplate.anchor.setTo(0.5, 1);
       //this.iceplate.scale.setTo(3, 1);
       this.iceplate.friction = 0.0005;
       this.iceplate.visible = false;
 
-      this.iceplateGraphic = this.game.add.sprite(this.game.width/2, this.game.height-90, "crate");
+      this.iceplateGraphic = this.game.add.sprite(this.game.width/2, this.game.height-34-this.icePlateY, "crate");
       this.iceplateGraphic.anchor.setTo(0.5, 1);
       this.iceplateGraphic.y += 70;
 
-      this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
+      this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 150, "water-02");
       this.water2.anchor.setTo(0,1);
 
 
+      //Shadow
+      this.shadow = this.game.add.graphics(this.game.world.centerX, this.game.height-this.icePlateY-80);
+      this.shadow.beginFill(0x000000, 0.06);
+      this.shadow.drawPolygon(-80, 0, -60, -13, 0, -12, 80, 0, 30, 10, 0, 5, -60, 8, -80, 0);
+      this.shadow.endFill();
 
 
       this.game.physics.p2.enable(this.iceplate);
@@ -131,14 +176,7 @@
 
       this.game.physics.p2.enable(this.crate2);
 
-      var framesLeft = [];
-      for (i=0;i<47;i++) {
-        framesLeft.push(i);
-      }
-      var framesRight = [];
-      for (i=46;i>=0;i--) {
-        framesRight.push(i);
-      }
+      
       this.crate2animationLeft = this.crate2.animations.add('left', framesLeft, 23, true);
       this.crate2animationRight = this.crate2.animations.add('right', framesRight, 23, true);
       this.crate2animationTurn = this.crate2.animations.add('turn', [4], 20, true);
@@ -173,9 +211,21 @@
       this.mountains.tilePosition.x -= 0.3;
       this.water1.tilePosition.x -=1.5;
       this.water2.tilePosition.x -=1.5;
+      for(var i=0; i<this.numWaterWaves; i++) {
+        this.waterWaves[i].x -=1.5;
+        if(this.waterWaves[i].x < 0) {
+          this.waterWaves[i].x = this.game.width+Math.random()*60;
+          this.waterWaves[i].y = this.game.height-Math.random()*this.waterHeight;
+        }
+      }
 
       this.cloudz1.tilePosition.x -=0.8;
       this.cloudz2.tilePosition.x -=0.6;
+
+      this.shadow.x = this.crate2.position.x;
+      this.shadow.y = this.crate2.position.y+108;
+      this.shadow.angle = this.iceplate.angle;
+      this.shadow.alpha = 1-Math.abs(this.crate2.x - this.game.width/2)/(this.crate2.width*0.5);
 
       //________________ CONTROLS
       this.crate2pos = {
@@ -192,7 +242,6 @@
       }
       this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
       
-      console.log(this.headVelocity);
 
       if (this.cursors.left.isDown) {
 
@@ -277,7 +326,7 @@
       this.updateDistance();
 
       //console.log(this.game.world.bounds.height, this.crate2.position.y + this.crate2.height);
-      if (this.crate2.position.y > this.iceplate.position.y) {
+      if (this.crate2.position.y > this.game.height-this.waterHeight+70) {
         localStorage.setItem('score', this.timer);
         localStorage.setItem('distance', this.distance);
         //this.score.current = this.timer;
