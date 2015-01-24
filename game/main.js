@@ -4,7 +4,6 @@
 window.onload = function () {
   var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, 'giraffe');
 
-  console.log(window.innerWidth, window.innerHeight);
   // Game States
   game.state.add('boot', require('./states/boot'));
   game.state.add('gameover', require('./states/gameover'));

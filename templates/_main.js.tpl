@@ -4,7 +4,6 @@
 window.onload = function () {
   var game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '<%= _.slugify(projectName) %>');
 
-  console.log(window.innerWidth, window.innerHeight);
   // Game States
   <% _.forEach(gameStates, function(gameState) {  %>game.state.add('<%= gameState.shortName %>', require('./states/<%= gameState.shortName %>'));
   <% }); %>

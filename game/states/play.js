@@ -21,6 +21,14 @@
       this.halsDetails = 100;
 
 
+      // Timer
+      this.timer = 0;
+      this.timerText = '';
+
+      // Distance
+      this.distance = 0;
+      this.distanceText = '';
+
       this.cursors = null;
     },
     create: function() {
@@ -65,6 +73,10 @@
 
 
 
+      // Add timer & score
+      this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, { font: "24px Arial", fill: "#333333" });
+      this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, { font: "24px Arial", fill: "#333333" });
+      this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
 
       //________________ CONTROLS
@@ -98,15 +110,15 @@
       }
       //UPDATE Y POSITION OF HEAD BASED ON X
       //(x - xm)2 + (y - ym)2 = r2
-      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v 
+      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v
       var xm = this.crate2.x;
       var ym = this.crate2.y;
       var x = Math.abs(this.head.body.x-this.game.width/2);
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
-      
+
       this.head.body.y = x*x/300+50;
 
- 
+
       //Play Animations based on
       if(this.iceplateAngle > 0) {
 
@@ -121,12 +133,22 @@
           this.crate2.animations.stop();
           this.facing = 'idle';
         }
-      } 
+      }
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3;
 
       this.rotatePlate();
+
+      this.updateDistance();
+
+      //console.log(this.game.world.bounds.height, this.crate2.position.y + this.crate2.height);
+      if (this.crate2.position.y > this.iceplate.position.y) {
+        localStorage.setItem('bestScore', 'fu');
+        localStorage.setItem('score', this.timer);
+        //this.score.current = this.timer;
+        this.game.state.start('gameover');
+      }
     },
     clickListener: function() {
       this.game.state.start('gameover');
@@ -172,13 +194,22 @@
         var y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
 
         return {x: x, y: y};
-      },
-     toDegrees: function(angle) {
+    },
+    toDegrees: function(angle) {
         return angle * (180 / Math.PI);
-      },
-     toRadians: function (angle) {
+    },
+    toRadians: function (angle) {
         return angle * (Math.PI / 180);
-      }
+    },
+    updateTimer: function() {
+      this.timer++;
+      this.timerText.setText('Time: ' + this.timer);
+    },
+    updateDistance: function() {
+      this.distance++;
+
+      this.distanceText.setText('Distance travelled: ' + this.distance);
+    }
   };
 
   module.exports = Play;
