@@ -62,7 +62,7 @@
       this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130, this.game.width, 170, "cloudz-02");
       this.cloudz2.anchor.setTo(0, 1);
 
-      
+
       for(var i=0; i<this.halsDetails; i++) {
         this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
         this.circles[i].lineStyle(1, 0xf4c54d);
@@ -199,7 +199,7 @@
       } else if (this.cursors.right.isDown) {
 
         if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance && (this.head.body.x-this.game.width/2) < (this.maxHeadDistance/2)) {
-        
+
           this.head.body.velocity.x += 10;
           this.stopHead = false;
         } else {
@@ -225,10 +225,10 @@
       var ym = this.crate2.y;
       var x = Math.abs(this.head.body.x-this.game.width/2);
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
-      
+
       this.head.body.y = x*x/300+this.headPosY;
 
- 
+
       //Play Animations based on
       if(this.iceplateAngle > 0) {
 
@@ -253,7 +253,7 @@
       this.updateDistance();
 
       //console.log(this.game.world.bounds.height, this.crate2.position.y + this.crate2.height);
-      if (this.crate2.position.y > this.iceplate.position.y) {
+      if (this.crate2.position.y > this.game.height - this.game.height / 5 ) {
         localStorage.setItem('score', this.timer);
         localStorage.setItem('distance', this.distance);
         //this.score.current = this.timer;
