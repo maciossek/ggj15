@@ -75,7 +75,7 @@
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 900;
-      this.game.physics.p2.friction = 0.0001;
+      this.game.physics.p2.friction = 0.001;
 
 
 
@@ -269,8 +269,9 @@
           this.stopHead = false;
         } else {
           //this.head.body.velocity.x -= 5;
-          this.stopHead = true;
           this.headVelocity = this.headVelocityConstant;
+          this.stopHead = true;
+          
         }
 
 
@@ -286,8 +287,9 @@
           this.stopHead = true;
         }
       } else {
-        this.stopHead = true;
         this.headVelocity = this.headVelocityConstant;
+        this.stopHead = true;
+        
       }
       if(this.stopHead) {
 
