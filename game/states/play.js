@@ -144,14 +144,11 @@
 
       //console.log(this.game.world.bounds.height, this.crate2.position.y + this.crate2.height);
       if (this.crate2.position.y > this.iceplate.position.y) {
-        localStorage.setItem('bestScore', 'fu');
         localStorage.setItem('score', this.timer);
+        localStorage.setItem('distance', this.distance);
         //this.score.current = this.timer;
         this.game.state.start('gameover');
       }
-    },
-    clickListener: function() {
-      this.game.state.start('gameover');
     },
     rotatePlate: function() {
       this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
@@ -206,7 +203,10 @@
       this.timerText.setText('Time: ' + this.timer);
     },
     updateDistance: function() {
-      this.distance++;
+      this.distance = this.distance + 1;
+      if (this.iceplateAngle > 0) {
+        this.distance = this.distance + 0.5 * Math.abs(this.iceplateAngle);
+      }
 
       this.distanceText.setText('Distance travelled: ' + this.distance);
     }
