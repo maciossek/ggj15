@@ -11,6 +11,10 @@
       //mountains 
       this.mountains = null;
 
+      //clouds
+      this.cloudz1 = null;
+      this.cloudz2 = null;
+
       //water
       this.water1 = null;
       this.water2 = null;
@@ -19,12 +23,12 @@
       /*--------FIGURES--------*/
       //giraffe Variables
       this.crate2 = null;
-      this.crate2angleMultiplier = 0.1;
+      this.crate2angleMultiplier = 0.15;
       this.facing = 'left';
       //head Variables
       this.head = null;
       this.headPosY = 100;
-      this.maxHeadDistance = 250;
+      this.maxHeadDistance = 300;
       this.headAngleMultiplier = 0.1;
       this.stopHead = true;
 
@@ -32,6 +36,14 @@
       this.circles=[];
       this.halsDetails = 100;
 
+
+      // Timer
+      this.timer = 0;
+      this.timerText = '';
+
+      // Distance
+      this.distance = 0;
+      this.distanceText = '';
 
       this.cursors = null;
     },
@@ -43,6 +55,12 @@
       this.mountains = this.game.add.tileSprite(0, this.game.height-117, this.game.width, 170, "mountain-graphic");
       //this.mountains.scale.setTo(0.2, 0.2);
       this.mountains.anchor.setTo(0, 1);
+
+
+      this.cloudz1 = this.game.add.tileSprite(0, this.game.height-400, this.game.width, 170, "cloudz-01");
+      this.cloudz1.anchor.setTo(0, 1);
+      this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130, this.game.width, 170, "cloudz-02");
+      this.cloudz2.anchor.setTo(0, 1);
 
       
       for(var i=0; i<this.halsDetails; i++) {
@@ -98,7 +116,7 @@
 
       //Setup Giraffe
       this.crate2 = this.game.add.sprite(this.game.width/2, this.game.height*0.5, "giraffe");
-      this.crate2.anchor.setTo(0.5, 1);
+      this.crate2.anchor.setTo(0.5, 0.5);
 
       this.game.physics.p2.enable(this.crate2);
 
@@ -124,6 +142,10 @@
 
 
 
+      // Add timer & score
+      this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, { font: "24px Arial", fill: "#333333" });
+      this.distanceText = this.game.add.text(15, 40, "Distance: " + this.distance, { font: "24px Arial", fill: "#333333" });
+      this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
 
       //________________ CONTROLS
@@ -137,29 +159,40 @@
     },
     update: function() {
       this.drawBezier();
-      this.mountains.tilePosition.x -= 0.5;
-      this.water1.tilePosition.x -=1.2;
-      this.water2.tilePosition.x -=1.2;
+      this.mountains.tilePosition.x -= 0.3;
+      this.water1.tilePosition.x -=1.5;
+      this.water2.tilePosition.x -=1.5;
+
+      this.cloudz1.tilePosition.x -=0.8;
+      this.cloudz2.tilePosition.x -=0.6;
+
       //________________ CONTROLS
       if (this.cursors.left.isDown) {
-
-        if(this.crate2.body.x-this.head.body.x < (this.maxHeadDistance)) {
+        var crate2pos = {
+          x: this.crate2.body.x,
+          y: this.crate2.body.y
+        }
+        var headPosX = {
+          x: this.head.body.x,
+          y: this.head.body.y
+        }
+        if(this.crate2.body.x-this.head.body.x < (this.maxHeadDistance) && (this.head.body.x-this.game.width/2) > (-this.maxHeadDistance/2)) {
           this.head.body.velocity.x -= 10;
           this.stopHead = false;
         } else {
-          this.head.body.velocity.x -= 5;
+          //this.head.body.velocity.x -= 5;
           this.stopHead = true;
         }
 
        
       } else if (this.cursors.right.isDown) {
 
-        if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance) {
-          console.log(this.crate2.body.x-this.head.body.x);
+        if(this.crate2.body.x-this.head.body.x > -this.maxHeadDistance && (this.head.body.x-this.game.width/2) < (this.maxHeadDistance/2)) {
+        
           this.head.body.velocity.x += 10;
           this.stopHead = false;
         } else {
-          this.head.body.velocity.x += 5;
+          //this.head.body.velocity.x += 5;
           this.stopHead = true;
         }
       } else {
@@ -172,17 +205,22 @@
           this.head.body.velocity.x -=5;
         }
       }
+
+      this.rotateHead();
       //UPDATE Y POSITION OF HEAD BASED ON X
       //(x - xm)2 + (y - ym)2 = r2
-      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v 
+      // y' = (x-u) sin(beta) + (y-v) cos(beta) + v
       var xm = this.crate2.x;
       var ym = this.crate2.y;
       var x = Math.abs(this.head.body.x-this.game.width/2);
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
+
       
       this.head.body.y = x*x/300+this.headPosY;
 
- 
+
+
+
       //Play Animations based on
       if(this.iceplateAngle > 0) {
 
@@ -197,15 +235,22 @@
           this.crate2.animations.stop();
           this.facing = 'idle';
         }
-      } 
+      }
 
-      this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*3+5;
-      this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*3+5;
+      this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
+      this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
 
       this.rotatePlate();
-    },
-    clickListener: function() {
-      this.game.state.start('gameover');
+
+      this.updateDistance();
+
+      //console.log(this.game.world.bounds.height, this.crate2.position.y + this.crate2.height);
+      if (this.crate2.position.y > this.iceplate.position.y) {
+        localStorage.setItem('score', this.timer);
+        localStorage.setItem('distance', this.distance);
+        //this.score.current = this.timer;
+        this.game.state.start('gameover');
+      }
     },
     rotatePlate: function() {
       this.iceplateAngle = (this.head.position.x-this.game.width/2)*this.headAngleMultiplier + (this.crate2.position.x-this.game.width/2)*this.crate2angleMultiplier;
@@ -213,12 +258,23 @@
       this.iceplateGraphic.angle = this.iceplateAngle;
 
     },
+    rotateHead: function() {
+      this.head.body.angle = -Math.abs((this.head.position.x-this.crate2.position.x)/5);
+
+    },
     drawBezier: function() {
+      var headStartX = 90 * Math.sin(this.toRadians(this.crate2.body.angle+15));
+      var headStartY = 90 * Math.cos(this.toRadians(this.crate2.body.angle+15));
+
+      var headBezierX = 140 * Math.sin(this.toRadians(this.crate2.body.angle+30));
+      var headBezierY = 140 * Math.cos(this.toRadians(this.crate2.body.angle+30));
+
+
       var accuracy = 1 / this.halsDetails, //this'll give the bezier 100 segments
         p0 = {x: this.head.position.x, y: this.head.position.y}, //use whatever points you want obviously
         p1 = {x: this.head.position.x, y: this.head.position.y + 100},
-        p2 = {x: this.crate2.position.x + 20, y: this.crate2.position.y - 150},
-        p3 = {x: this.crate2.position.x + 20, y: this.crate2.position.y - 70};
+        p2 = {x: this.crate2.position.x + headStartX + headBezierX, y: this.crate2.position.y - headStartY - headBezierY},
+        p3 = {x: this.crate2.position.x + headStartX, y: this.crate2.position.y - headStartY};
 
 
       for (var i = 0; i < 1; i += accuracy) {
@@ -249,13 +305,25 @@
         var y = (aY * Math.pow(t, 3)) + (bY * Math.pow(t, 2)) + (cY * t) + p0.y;
 
         return {x: x, y: y};
-      },
-     toDegrees: function(angle) {
+    },
+    toDegrees: function(angle) {
         return angle * (180 / Math.PI);
-      },
-     toRadians: function (angle) {
+    },
+    toRadians: function (angle) {
         return angle * (Math.PI / 180);
+    },
+    updateTimer: function() {
+      this.timer++;
+      this.timerText.setText('Time: ' + this.timer);
+    },
+    updateDistance: function() {
+      this.distance = this.distance + 1;
+      if (this.iceplateAngle > 0) {
+        this.distance = this.distance + 0.5 * Math.abs(this.iceplateAngle);
       }
+
+      this.distanceText.setText('Distance travelled: ' + this.distance);
+    }
   };
 
   module.exports = Play;
