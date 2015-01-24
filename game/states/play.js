@@ -11,7 +11,7 @@
       this.icePlateY = 90;
 
       /*---------AMBIENTE-------*/
-      //mountains
+      //mountains 
       this.mountains = null;
 
       //clouds
@@ -72,7 +72,7 @@
 
       this.cursors = null;
     },
-    create: function() {
+    create: function() { 
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 900;
       this.game.physics.p2.friction = 0.00001;
@@ -89,37 +89,24 @@
       this.cloudz2 = this.game.add.tileSprite(0, this.game.height-130-this.moveBackgroundConstant, this.game.width, 170, "cloudz-02");
       this.cloudz2.anchor.setTo(0, 1);
 
-<<<<<<< HEAD
       
       
-=======
-
-      for(var i=0; i<this.halsDetails; i++) {
-        this.circles[i] = this.game.add.graphics(this.game.world.centerX, this.game.world.centerY);
-        this.circles[i].lineStyle(1, 0xf4c54d);
-        this.circles[i].beginFill(0xf4c54d, 1);
-
-        this.circles[i].drawCircle(0, 0, 50);
-        this.circles[i].endFill();
-      }
->>>>>>> FETCH_HEAD
 
       //SETUP Mountains
       //bgtile = game.add.tileSprite(0, 0, game.stage.bounds.width, game.cache.getImage('bgtile').height, 'bgtile');
 
-
+  
 
       /*this.mountains.create(0, 0, 'mountain-02');
       this.mountains.create(1720+1606, 0, 'mountain-03');
       this.mountains.create(1720+1606+1301, 0, 'mountain-04');
       this.mountains.create(1720+1606+1301+1416, 0, 'mountain-05');*/
-
+      
 
 
       this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, this.waterHeight, "water-01");
       this.water1.anchor.setTo(0, 1);
 
-<<<<<<< HEAD
       var framesLeft = [];
       for (i=0;i<47;i++) {
         framesLeft.push(i);
@@ -156,8 +143,6 @@
         this.circles[i].drawCircle(0, 0, 50);
         this.circles[i].endFill();
       }
-=======
->>>>>>> FETCH_HEAD
 
 
       //SETUP Iceplate
@@ -183,7 +168,7 @@
 
 
       this.game.physics.p2.enable(this.iceplate);
-
+      
       this.iceplate.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
       this.iceplate.hitArea = new Phaser.Rectangle(0, 0, 20, 20);
       //this.iceplate.body.setSize(100, 50, 50, 25);
@@ -287,12 +272,7 @@
         y: this.crate2pos.y-this.headPos.y
       }
       this.distanceHeadCrate = Math.sqrt(this.deltaHeadCrate.x*this.deltaHeadCrate.x+this.deltaHeadCrate.y*this.deltaHeadCrate.y);
-<<<<<<< HEAD
       
-=======
-
-      console.log(this.headVelocity);
->>>>>>> FETCH_HEAD
 
       if (this.cursors.left.isDown) {
         this.setStart();
@@ -306,7 +286,7 @@
           this.headVelocity = this.headVelocityConstant;
         }
 
-
+       
       } else if (this.cursors.right.isDown) {
         this.setStart();
         if(this.distanceHeadCrate < 500) {
@@ -323,7 +303,7 @@
         this.headVelocity = this.headVelocityConstant;
       }
       if(this.stopHead) {
-
+        
         if(this.distanceHeadCrate > 500 && this.headPos.x < this.crate2pos.x) {
           this.head.body.velocity.x +=10;
         } else if(this.distanceHeadCrate > 500 && this.headPos.x > this.crate2pos.x) {
@@ -335,7 +315,7 @@
               this.head.body.velocity.x -=5;
             }
         }
-
+        
       }
 
       this.rotateHead();
@@ -347,7 +327,7 @@
       var x = this.head.body.x-this.game.width/2 + xm;
       var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
 
-
+      
       this.head.body.y = x*x*0.001+this.headPosY;
 
 
