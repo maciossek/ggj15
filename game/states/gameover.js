@@ -4,11 +4,17 @@ function GameOver() {}
 
 GameOver.prototype = {
   preload: function () {
-    if (localStorage.getItem('score') > localStorage.getItem('bestScore')) {
-      localStorage.setItem('bestScore', localStorage.getItem('score'));
+    this.currentScore = Math.round(localStorage.getItem('score'));
+    this.bestScore = Math.round(localStorage.getItem('bestScore'));
+    this.steps =  Math.round(localStorage.getItem('distance'));
+    this.bestSteps = Math.round(localStorage.getItem('bestDistance'));
+
+
+    if (this.currentScore > this.bestScore) {
+      localStorage.setItem('bestScore', this.currentScore);
     }
-    if (localStorage.getItem('distance') > localStorage.getItem('bestDistance')) {
-      localStorage.setItem('bestDistance', localStorage.getItem('distance'));
+    if (this.steps > this.bestSteps) {
+      localStorage.setItem('bestDistance', this.steps);
     }
 
   },
@@ -40,6 +46,11 @@ GameOver.prototype = {
 
     this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
+
+    var style = { font: '24px Slabo', fill: '#ffffff', align: 'center'};
+
+    this.timerText = this.game.add.text(15, 20, "Time: " + this.currentScore, style);
+    this.distanceText = this.game.add.text(this.game.width - 110, 20, "Steps: " + this.steps, style);
 
     this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You lasted ' + localStorage.getItem('score') + ' Seconds', { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
