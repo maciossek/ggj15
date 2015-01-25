@@ -52,7 +52,7 @@ GameOver.prototype = {
     var style = { font: '120px ShareTech', fill: '#77afa7', align: 'center'};
 
     this.timerText = this.game.add.text(15, 20, "Time: " + this.currentScore, style);
-    this.distanceText = this.game.add.text(this.game.width - 20, 20, "Steps: " + this.steps, style);
+    this.distanceText = this.game.add.text(this.game.width - 20, 20, "Steps: " + this.steps, { font: '60px ShareTech', fill: '#77afa7', align: 'center'});
 
     this.distanceText.anchor.setTo(0.5, 0.5);
     this.timerText.anchor.setTo(0.5, 0.5);
@@ -65,7 +65,7 @@ GameOver.prototype = {
     this.game.add.tween(this.timerText.scale).to({ x:1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 10);;
 
     this.game.add.tween(this.timerText).to({ x: this.game.width/2, y:120 }, 500, Phaser.Easing.Back.Out, true, 10);
-    this.game.add.tween(this.distanceText).to({ x: this.game.width/2, y: 260 }, 500, Phaser.Easing.Back.Out, true, 10);
+    this.game.add.tween(this.distanceText).to({ x: this.game.width/2, y: 200 }, 500, Phaser.Easing.Back.Out, true, 10);
 
 
 /*

@@ -46,7 +46,7 @@
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.002;
+      this.headAngleMultiplier = 0.00215;
       this.stopHead = true;
 
 
@@ -490,6 +490,20 @@
         //this.dialogueTween.start();
       }
 
+    },
+    shutdown: function() {
+      this.iceplate.destroy();
+      this.mountains.destroy();
+
+      //clouds
+      this.cloudz1.destroy();
+      this.cloudz2.destroy();
+
+      //water
+      this.water1.destroy();
+      this.water2.destroy();
+      this.crate2.destroy();
+      this.head.destroy();
     }
   };
 
