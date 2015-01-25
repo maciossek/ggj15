@@ -14,8 +14,12 @@
       this.IP2Y = 0;
 
       this.n = 0;
+
       
       /*---------AMBIENTE-------*/
+      this.timeOutValue2 = 30;
+      this.timeout2 = this.timeOutValue2;
+      this.ambientMultiplier = 1.4;
       //mountains
       this.mountains = null;
 
@@ -213,6 +217,9 @@
 
 
       //Setup Head
+      if(this.crate2.y - this.headPosY > this.maxHeadDistance) {
+        this.headPosY = this.crate2.y-(this.maxHeadDistance-50);
+      } 
       this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
 
       this.game.physics.p2.enable(this.head);
@@ -249,21 +256,15 @@
       }
     },
     update: function() {
-
-      this.drawBezier();
-      this.mountains.tilePosition.x -= 0.3;
-      this.water1.tilePosition.x -=1.5;
-      this.water2.tilePosition.x -=1.5;
-      for(var i=0; i<this.numWaterWaves; i++) {
-        this.waterWaves[i].x -=1.5;
-        if(this.waterWaves[i].x < 0) {
-          this.waterWaves[i].x = this.game.width+Math.random()*60;
-          this.waterWaves[i].y = this.game.height-Math.random()*this.waterHeight;
-        }
+      if (this.game.time.time > this.timeout2) { 
+        
+        this.moveBackgroundSprites();
+        this.timeout2 = this.game.time.time+this.timeOutValue2;
       }
+      this.drawBezier();
 
-      this.cloudz1.tilePosition.x -=0.8;
-      this.cloudz2.tilePosition.x -=0.6;
+      
+      
 
       this.shadow.x = this.crate2.position.x;
       this.shadow.y = this.crate2.position.y+108;
@@ -393,6 +394,21 @@
         //this.score.current = this.timer;
         this.game.state.start('gameover');
       }
+    },
+    moveBackgroundSprites: function() {
+      this.mountains.tilePosition.x -= 0.3*this.ambientMultiplier;
+      this.water1.tilePosition.x -=1.5*this.ambientMultiplier;
+      this.water2.tilePosition.x -=1.5*this.ambientMultiplier;
+      for(var i=0; i<this.numWaterWaves; i++) {
+        this.waterWaves[i].x -=1.5*this.ambientMultiplier;
+        if(this.waterWaves[i].x < 0) {
+          this.waterWaves[i].x = this.game.width+Math.random()*60;
+          this.waterWaves[i].y = this.game.height-Math.random()*this.waterHeight;
+        }
+      }
+
+      this.cloudz1.tilePosition.x -=0.8*this.ambientMultiplier;
+      this.cloudz2.tilePosition.x -=0.6*this.ambientMultiplier;
     },
     rotatePlate: function() {
       this.iceplateAngleMod = 1;
