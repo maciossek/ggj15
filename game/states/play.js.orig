@@ -15,6 +15,10 @@
 
       this.n = 0;
 
+<<<<<<< HEAD
+=======
+      
+>>>>>>> 5ebfdbc554e171dca2331f38e1a88de6ad6a7ce9
       /*---------AMBIENTE-------*/
       this.timeOutValue2 = 30;
       this.timeout2 = this.timeOutValue2;
@@ -216,13 +220,14 @@
 
 
       //Setup Head
+      console.log(this.crate2.y-300);
       if(this.crate2.y - this.headPosY > this.maxHeadDistance) {
         this.headPosY = this.crate2.y-this.maxHeadDistance;
         this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
       }  else {
         this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
       }
-
+      
 
       this.game.physics.p2.enable(this.head);
       this.head.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
@@ -235,7 +240,7 @@
       var style = { font: '64px ShareTech', fill: '#77afa7', align: 'center'};
 
       this.timerText = this.game.add.text(15, 20, '', style);
-      //this.distanceText = this.game.add.text(this.game.width- 80, 20, '', style);
+      this.distanceText = this.game.add.text(this.game.width- 80, 20, '', style);
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
@@ -255,15 +260,15 @@
       }
     },
     update: function() {
-      if (this.game.time.time > this.timeout2) {
-
+      if (this.game.time.time > this.timeout2) { 
+        
         this.moveBackgroundSprites();
         this.timeout2 = this.game.time.time+this.timeOutValue2;
       }
       this.drawBezier();
 
-
-
+      
+      
 
       this.shadow.x = this.crate2.position.x;
       this.shadow.y = this.crate2.position.y+108;
@@ -367,12 +372,12 @@
           this.facing = 'idle';
         }
       }
-      if (this.game.time.time> this.timeout) {
+      if (this.game.time.time> this.timeout) { 
          this.crate2animationLeft.speed = Math.round(Math.abs(this.iceplateAngle)*20+15);
          this.crate2animationRight.speed = this.crate2animationLeft.speed;
-         this.timeout= this.game.time.time+this.timeOutValue;
+         this.timeout= this.game.time.time+this.timeOutValue; 
       }
-
+      
       /*if(this.crate2animationLeft.speed > 180) {
         this.head.frame = 1;
       } else if(this.crate2animationLeft.speed > 100) {
@@ -482,7 +487,7 @@
     updateDistance: function() {
       if(this.gameStarted) {
         this.distance = this.distance +1 * (this.animationSpeed/1000);
-        //this.distanceText.setText(Math.round(this.distance));
+        this.distanceText.setText(Math.round(this.distance));
       }
     },
     startClick: function() {
