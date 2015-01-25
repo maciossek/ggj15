@@ -42,7 +42,7 @@
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.002;
+      this.headAngleMultiplier = 0.0015;
       this.stopHead = true;
 
 
