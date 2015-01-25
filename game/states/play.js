@@ -14,7 +14,7 @@
       this.IP2Y = 0;
 
       this.n = 0;
-      
+
       /*---------AMBIENTE-------*/
       //mountains
       this.mountains = null;
@@ -221,9 +221,10 @@
 
       }
       // Add timer & score
-      var style = { font: '24px Slabo', fill: '#ffffff', align: 'center'};
-      this.timerText = this.game.add.text(15, 20, "Time: " + this.timer, style);
-      this.distanceText = this.game.add.text(15, 40, "Steps: " + this.distance, style);
+      var style = { font: '64px ShareTech', fill: '#77afa7', align: 'center'};
+
+      this.timerText = this.game.add.text(15, 20, '', style);
+      this.distanceText = this.game.add.text(this.game.width- 80, 20, '', style);
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
@@ -273,7 +274,7 @@
       this.n++;
       this.iceplate.body.y = this.IP1Y+Math.sin(this.n*0.06)*8;
       this.iceplateGraphic.y = this.IP2Y+Math.sin(this.n*0.06)*8;
-      
+
 
       //________________ CONTROLS
       this.crate2pos = {
@@ -301,7 +302,7 @@
           //this.head.body.velocity.x -= 5;
           this.headVelocity = this.headVelocityConstant;
           this.stopHead = true;
-          
+
         }
 
 
@@ -319,7 +320,7 @@
       } else {
         this.headVelocity = this.headVelocityConstant;
         this.stopHead = true;
-        
+
       }
       if(this.stopHead) {
 
@@ -454,7 +455,7 @@
     updateTimer: function() {
       if(this.gameStarted) {
         this.timer++;
-        this.timerText.setText('Time: ' + this.timer);
+        this.timerText.setText(this.timer + 's');
       }
 
 
@@ -462,7 +463,7 @@
     updateDistance: function() {
       if(this.gameStarted) {
         this.distance = this.distance +1 * (this.animationSpeed/1000);
-        this.distanceText.setText('Steps: ' + Math.round(this.distance));
+        this.distanceText.setText(Math.round(this.distance));
       }
     },
     startClick: function() {
