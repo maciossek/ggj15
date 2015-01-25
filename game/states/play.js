@@ -13,7 +13,6 @@
       this.IP1Y = 0;
       this.IP2Y = 0;
 
-      this.d = new Date();
       this.n = 0;
       
       /*---------AMBIENTE-------*/
@@ -42,7 +41,7 @@
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.0015;
+      this.headAngleMultiplier = 0.0017;
       this.stopHead = true;
 
 
@@ -59,6 +58,21 @@
       this.headPos = null;
       this.crate2pos = null;
       this.distanceHeadCrate = null;
+
+      //Hals Bezier
+      this.headStartX = 0;
+      this.headStartY = 0;
+
+      this.headBezierX = 0;
+      this.headBezierY = 0;
+
+      this.p0 = 0;
+      this.p1 = 0;
+      this.p2 = 0;
+      this.p3 = 0;
+      this.bP = 0;
+
+      this.accuracy = 1
 
       //Giraffe Schatten
       this.shadow = null;
@@ -386,30 +400,30 @@
 
     },
     drawBezier: function() {
-      var headStartX = 90 * Math.sin(this.toRadians(this.crate2.body.angle+15));
-      var headStartY = 90 * Math.cos(this.toRadians(this.crate2.body.angle+15));
+      this.headStartX = 90 * Math.sin(this.toRadians(this.crate2.body.angle+15));
+      this.headStartY = 90 * Math.cos(this.toRadians(this.crate2.body.angle+15));
 
-      var headBezierX = 140 * Math.sin(this.toRadians(this.crate2.body.angle+30));
-      var headBezierY = 140 * Math.cos(this.toRadians(this.crate2.body.angle+30));
-
-
-      var accuracy = 1 / this.halsDetails, //this'll give the bezier 100 segments
-        p0 = {x: this.head.position.x, y: this.head.position.y}, //use whatever points you want obviously
-        p1 = {x: this.head.position.x, y: this.head.position.y + 100},
-        p2 = {x: this.crate2.position.x + headStartX + headBezierX, y: this.crate2.position.y - headStartY - headBezierY},
-        p3 = {x: this.crate2.position.x + headStartX, y: this.crate2.position.y - headStartY};
+      this.headBezierX = 140 * Math.sin(this.toRadians(this.crate2.body.angle+30));
+      this.headBezierY = 140 * Math.cos(this.toRadians(this.crate2.body.angle+30));
 
 
-      for (var i = 0; i < 1; i += accuracy) {
-        var p = this.calculateBezier(i, p0, p1, p2, p3);
+      this.accuracy = 1 / this.halsDetails //this'll give the bezier 100 segments
+      this.p0 = {x: this.head.position.x, y: this.head.position.y}; //use whatever points you want obviously
+      this.p1 = {x: this.head.position.x, y: this.head.position.y + 100};
+      this.p2 = {x: this.crate2.position.x + this.headStartX + this.headBezierX, y: this.crate2.position.y - this.headStartY - this.headBezierY};
+      this.p3 = {x: this.crate2.position.x + this.headStartX, y: this.crate2.position.y - this.headStartY};
+
+
+      for (var i = 0; i < 1; i += this.accuracy) {
+        this.bP = this.calculateBezier(i, this.p0, this.p1, this.p2, this.p3);
 
 
         //console.log(Math.round(i/accuracy));
-        this.circles[Math.round(i / accuracy)].x = p.x;
-        this.circles[Math.round(i / accuracy)].y = p.y;
+        this.circles[Math.round(i / this.accuracy)].x = this.bP.x;
+        this.circles[Math.round(i / this.accuracy)].y = this.bP.y;
 
 
-        this.circles[Math.round(i / accuracy)].scale.set(0.5 * i + 0.2, 0.5 * i + 0.2);
+        this.circles[Math.round(i / this.accuracy)].scale.set(0.5 * i + 0.2, 0.5 * i + 0.2);
 
         //console.log("x: "+p.x+"  y: "+p.y);
       }
