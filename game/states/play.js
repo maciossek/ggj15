@@ -204,7 +204,7 @@
 
 
       //Setup Giraffe
-      this.crate2 = this.game.add.sprite(this.game.width/2, this.game.height*0.5, "giraffe");
+      this.crate2 = this.game.add.sprite(this.game.width/2, this.iceplate.y-this.iceplate.height/2-120, "giraffe");
       this.crate2.anchor.setTo(0.5, 0.5);
 
       this.game.physics.p2.enable(this.crate2);
@@ -217,10 +217,14 @@
 
 
       //Setup Head
+      console.log(this.crate2.y-300);
       if(this.crate2.y - this.headPosY > this.maxHeadDistance) {
-        this.headPosY = this.crate2.y-(this.maxHeadDistance-50);
-      } 
-      this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
+        this.headPosY = this.crate2.y-this.maxHeadDistance;
+        this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
+      }  else {
+        this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
+      }
+      
 
       this.game.physics.p2.enable(this.head);
       this.head.body.motionState = Phaser.Physics.P2.Body.KINEMATIC;
