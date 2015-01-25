@@ -36,6 +36,7 @@ Preload.prototype = {
     this.load.spritesheet('giraffe', 'assets/giraffe_sprite_04.png', 200.25,245.25);
     this.load.image('replayButton', 'assets/crate.png');
     this.load.image('dialogue', 'assets/crate.png');
+    this.load.image('frozenGiraffe', 'assets/IceCube_01-01.png');
 
   },
   create: function() {

@@ -35,8 +35,12 @@ GameOver.prototype = {
     this.water1 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-01");
     this.water1.anchor.setTo(0, 1);
 
-    this.frozenGiraffe = this.game.add.sprite(this.game.width * 0.3, this.game.height* 0.3 , "frozenGiraffe");
-    this.game.add.tween(this.frozenGiraffe).to({y:this.frozenGiraffe.position.y + 10}, 3400, Phaser.Easing.Bounce.Out, true, 0, 1000, true);
+    this.frozenGiraffe = this.game.add.sprite(this.game.width/4, this.game.height , "frozenGiraffe");
+    var tw = this.game.add.tween(this.frozenGiraffe).to({y: this.game.height-this.frozenGiraffe.height/2 }, 1200, Phaser.Easing.Cubic.Out, true, 0);
+    tw.onComplete.add(function(){
+      this.game.add.tween(this.frozenGiraffe).to({y:this.frozenGiraffe.position.y + 20}, 2400, Phaser.Easing.Cubic.InOut, true, 0, 1000, true).start();
+      },this);
+    //
 
     this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 117, "water-02");
     this.water2.anchor.setTo(0,1);
@@ -45,19 +49,26 @@ GameOver.prototype = {
 
     //this.frozenGiraffe .body.motionState = Phaser.Physics.P2.Body.STATIC;
 
-    this.titleText = this.game.add.text(this.game.world.centerX,100, 'Game Over!', style);
-    this.titleText.anchor.setTo(0.5, 0.5);
-
-    var style = { font: '24px Slabo', fill: '#ffffff', align: 'center'};
+    var style = { font: '120px ShareTech', fill: '#77afa7', align: 'center'};
 
     this.timerText = this.game.add.text(15, 20, "Time: " + this.currentScore, style);
-    this.distanceText = this.game.add.text(this.game.width - 110, 20, "Steps: " + this.steps, style);
+    this.distanceText = this.game.add.text(this.game.width - 20, 20, "Steps: " + this.steps, style);
 
-    /*this.distanceTextTween = this.game.add.tween(this.dialogue);
-    this.distanceTextTween.to({ alpha: 0, y: 20 }, 500, Phaser.Easing.Back.Out, true, 10);
-    this.distanceTextTween.start();
-    */
+    this.distanceText.anchor.setTo(0.5, 0.5);
+    this.timerText.anchor.setTo(0.5, 0.5);
+    this.distanceText.scale = { x:0.8, y: 0.8 };
+    this.timerText.scale = { x:0.8, y: 0.8 };
 
+
+
+    this.game.add.tween(this.distanceText.scale).to({ x:1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 10);;
+    this.game.add.tween(this.timerText.scale).to({ x:1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 10);;
+
+    this.game.add.tween(this.timerText).to({ x: this.game.width/2, y:80 }, 500, Phaser.Easing.Back.Out, true, 10);
+    this.game.add.tween(this.distanceText).to({ x: this.game.width/2, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
+
+
+/*
     this.congratsText = this.game.add.text(this.game.world.centerX, 200, 'You lasted ' + localStorage.getItem('score') + ' Seconds', { font: '32px Arial', fill: '#ffffff', align: 'center'});
     this.congratsText.anchor.setTo(0.5, 0.5);
     this.congratsText = this.game.add.text(this.game.world.centerX, 250, 'Best ' + localStorage.getItem('bestScore') + ' Seconds', { font: '32px Arial', fill: '#ffffff', align: 'center'});
@@ -68,6 +79,7 @@ GameOver.prototype = {
     this.congratsText.anchor.setTo(0.5, 0.5);
     this.instructionText = this.game.add.text(this.game.world.centerX, 400, 'Click To Play Again', { font: '16px Arial', fill: '#ffffff', align: 'center'});
     this.instructionText.anchor.setTo(0.5, 0.5);
+    */
   },
   update: function () {
     if(this.game.input.activePointer.justPressed()) {
