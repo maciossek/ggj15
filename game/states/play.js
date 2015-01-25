@@ -37,11 +37,13 @@
       this.crate2 = null;
       this.crate2angleMultiplier = 0.0005;
       this.facing = 'left';
+      this.timeOutValue = 1000;
+      this.timeout = this.timeOutValue
       //head Variables
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.0017;
+      this.headAngleMultiplier = 0.002;
       this.stopHead = true;
 
 
@@ -362,9 +364,12 @@
           this.facing = 'idle';
         }
       }
-
-      this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
-      this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
+      if (this.game.time.time> this.timeout) { 
+         this.crate2animationLeft.speed = Math.round(Math.abs(this.iceplateAngle)*20+15);
+         this.crate2animationRight.speed = this.crate2animationLeft.speed;
+         this.timeout= this.game.time.time+this.timeOutValue; 
+      }
+      
       /*if(this.crate2animationLeft.speed > 180) {
         this.head.frame = 1;
       } else if(this.crate2animationLeft.speed > 100) {

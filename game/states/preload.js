@@ -33,7 +33,7 @@ Preload.prototype = {
 
     this.load.image('crate', 'assets/scholle-01.png');
     this.load.spritesheet('head', 'assets/headsSprite.png', 60, 45);
-    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_04.png', 200.25,245.25);
+    this.load.spritesheet('giraffe', 'assets/giraffe_sprite_05.png', 165,245);
     this.load.image('replayButton', 'assets/crate.png');
     this.load.image('dialogue', 'assets/crate.png');
     this.load.image('frozenGiraffe', 'assets/IceCube_01-01.png');
