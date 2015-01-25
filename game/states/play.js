@@ -44,7 +44,7 @@
       this.timeout = this.timeOutValue
       //head Variables
       this.head = null;
-      this.headPosY = 100;
+      this.headPosY = 30;
       this.maxHeadDistance = 470;
       this.headAngleMultiplier = 0.00215;
       this.stopHead = true;
