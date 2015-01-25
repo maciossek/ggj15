@@ -218,7 +218,7 @@
       //Setup Head
       //console.log(this.crate2.y-300);
       if(this.crate2.y - this.headPosY > this.maxHeadDistance) {
-        this.headPosY = this.crate2.y-this.maxHeadDistance;
+        this.headPosY = this.crate2.y-(this.maxHeadDistance-80);
         this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
       }  else {
         this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
