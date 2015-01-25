@@ -228,10 +228,6 @@
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
-      this.replayButton = this.game.add.button(this.game.width, 0, 'replayButton', this.startClick, this);
-      this.replayButton.anchor.setTo(0.5,0.5);
-
-      // Replay
       this.dialogue = this.game.add.sprite(this.game.width/2 + 110, 100, 'dialogue');
       this.dialogueTween = this.game.add.tween(this.dialogue);
       this.game.physics.p2.enable(this.dialogue);
