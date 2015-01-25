@@ -72,7 +72,7 @@
       this.p3 = 0;
       this.bP = 0;
 
-      this.accuracy = 1
+      this.accuracy = 1;
 
       //Giraffe Schatten
       this.shadow = null;
@@ -266,7 +266,9 @@
       this.shadow.x = this.crate2.position.x;
       this.shadow.y = this.crate2.position.y+108;
       this.shadow.angle = this.iceplate.angle;
-      this.shadow.alpha = 1-Math.abs(this.crate2.x - this.game.width/2)/(this.crate2.width*0.5);
+      if(this.shadow.alpha > 0) {
+        this.shadow.alpha = 1-Math.abs(this.crate2.x - this.game.width/2)/(this.crate2.width*0.5);
+      }
 
       this.n++;
       this.iceplate.body.y = this.IP1Y+Math.sin(this.n*0.06)*8;
@@ -366,13 +368,13 @@
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
-      if(this.crate2animationLeft.speed > 180) {
+      /*if(this.crate2animationLeft.speed > 180) {
         this.head.frame = 1;
       } else if(this.crate2animationLeft.speed > 100) {
         this.head.frame = 2;
       } else {
         this.head.frame = 0
-      }
+      }*/
       this.animationSpeed = this.crate2animationRight.speed;
 
       this.rotatePlate();
