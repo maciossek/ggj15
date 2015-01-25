@@ -30,13 +30,13 @@
       /*--------FIGURES--------*/
       //giraffe Variables
       this.crate2 = null;
-      this.crate2angleMultiplier = 0.0005;
+      this.crate2angleMultiplier = 0.0001;
       this.facing = 'left';
       //head Variables
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.002;
+      this.headAngleMultiplier = 0.001;
       this.stopHead = true;
 
 
@@ -75,7 +75,7 @@
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
       this.game.physics.p2.gravity.y = 900;
-      this.game.physics.p2.friction = 0.001;
+      this.game.physics.p2.friction = 0.01;
 
 
 
@@ -294,14 +294,14 @@
       if(this.stopHead) {
 
         if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x < this.crate2pos.x) {
-          this.head.body.velocity.x +=10;
+          this.head.body.velocity.x +=Math.abs(this.head.body.velocity.x)*0.1+(this.distanceHeadCrate-this.maxHeadDistance)*0.01;
         } else if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x > this.crate2pos.x) {
-          this.head.body.velocity.x -=10;
+          this.head.body.velocity.x -=Math.abs(this.head.body.velocity.x)*0.1+(this.distanceHeadCrate-this.maxHeadDistance)*0.01;
         } else {
             if(this.head.body.velocity.x < 0) {
-              this.head.body.velocity.x +=5;
+              this.head.body.velocity.x +=10;
             } else if(this.head.body.velocity.x > 0) {
-              this.head.body.velocity.x -=5;
+              this.head.body.velocity.x -=10;
             }
         }
 
@@ -340,7 +340,13 @@
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
-
+      if(this.crate2animationLeft.speed > 180) {
+        this.head.frame = 1;
+      } else if(this.crate2animationLeft.speed > 100) {
+        this.head.frame = 2;
+      } else {
+        this.head.frame = 0
+      }
       this.animationSpeed = this.crate2animationRight.speed;
 
       this.rotatePlate();
