@@ -91,8 +91,8 @@
       this.distance = 0;
       this.distanceText = '';
       this.animationSpeed;
-      this.dialogue;
-      this.dialogueTween;
+      //this.dialogue;
+      //this.dialogueTween;
       this.gameStarted = false;
 
       this.cursors = null;
@@ -240,10 +240,10 @@
       this.game.time.events.loop(Phaser.Timer.SECOND, this.updateTimer, this);
 
       // Replay
-      this.dialogue = this.game.add.sprite(this.game.width/2 + 110, 100, 'dialogue');
-      this.dialogueTween = this.game.add.tween(this.dialogue);
-      this.game.physics.p2.enable(this.dialogue);
-      this.dialogue.body.motionState = Phaser.Physics.P2.Body.STATIC;
+      //this.dialogue = this.game.add.sprite(this.game.width/2 + 110, 100, 'dialogue');
+      //this.dialogueTween = this.game.add.tween(this.dialogue);
+      //this.game.physics.p2.enable(this.dialogue);
+      //this.dialogue.body.motionState = Phaser.Physics.P2.Body.STATIC;
 
 
       //________________ CONTROLS
@@ -256,8 +256,21 @@
       }
     },
     update: function() {
-        
-      this.moveBackgroundSprites();
+
+      //this.moveBackgroundSprites();
+      this.mountains.tilePosition.x -= 0.3*this.ambientMultiplier;
+      this.water1.tilePosition.x -=1.5*this.ambientMultiplier;
+      this.water2.tilePosition.x -=1.5*this.ambientMultiplier;
+      for(var i=0; i<this.numWaterWaves; i++) {
+        this.waterWaves[i].x -=1.5*this.ambientMultiplier;
+        if(this.waterWaves[i].x < 0) {
+          this.waterWaves[i].x = this.game.width+Math.random()*60;
+          this.waterWaves[i].y = this.game.height-Math.random()*this.waterHeight;
+        }
+      }
+
+      this.cloudz1.tilePosition.x -=0.8*this.ambientMultiplier;
+      this.cloudz2.tilePosition.x -=0.6*this.ambientMultiplier;
       this.drawBezier();
 
 
@@ -365,11 +378,11 @@
           this.facing = 'idle';
         }
       }
-     
+
      this.crate2animationLeft.speed = Math.round(Math.abs(this.iceplateAngle)*20+15);
      this.crate2animationRight.speed = this.crate2animationLeft.speed;
-   
-      
+
+
       /*if(this.crate2animationLeft.speed > 180) {
         this.head.frame = 1;
       } else if(this.crate2animationLeft.speed > 100) {
@@ -390,21 +403,6 @@
         //this.score.current = this.timer;
         this.game.state.start('gameover');
       }
-    },
-    moveBackgroundSprites: function() {
-      this.mountains.tilePosition.x -= 0.3*this.ambientMultiplier;
-      this.water1.tilePosition.x -=1.5*this.ambientMultiplier;
-      this.water2.tilePosition.x -=1.5*this.ambientMultiplier;
-      for(var i=0; i<this.numWaterWaves; i++) {
-        this.waterWaves[i].x -=1.5*this.ambientMultiplier;
-        if(this.waterWaves[i].x < 0) {
-          this.waterWaves[i].x = this.game.width+Math.random()*60;
-          this.waterWaves[i].y = this.game.height-Math.random()*this.waterHeight;
-        }
-      }
-
-      this.cloudz1.tilePosition.x -=0.8*this.ambientMultiplier;
-      this.cloudz2.tilePosition.x -=0.6*this.ambientMultiplier;
     },
     rotatePlate: function() {
       this.iceplateAngleMod = 1;
@@ -488,8 +486,8 @@
     setStart: function() {
       if(!this.gameStarted) {
         this.gameStarted = true;
-        this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
-        this.dialogueTween.start();
+        //this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
+        //this.dialogueTween.start();
       }
 
     }
