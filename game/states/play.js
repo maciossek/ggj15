@@ -10,6 +10,12 @@
       this.iceplateAngle = 0;
       this.icePlateY = 90;
 
+      this.IP1Y = 0;
+      this.IP2Y = 0;
+
+      this.d = new Date();
+      this.n = 0;
+      
       /*---------AMBIENTE-------*/
       //mountains
       this.mountains = null;
@@ -40,9 +46,9 @@
       this.stopHead = true;
 
 
-      this.headVelocityConstant = 15;
+      this.headVelocityConstant = 20;
       this.headVelocity = this.headVelocityConstant;
-      this.headVelocityMultiplier = 0.96;
+      this.headVelocityMultiplier = 0.99;
 
       //giraffe hals
       this.circles=[];
@@ -74,8 +80,8 @@
     },
     create: function() {
       this.game.physics.startSystem(Phaser.Physics.P2JS);
-      this.game.physics.p2.gravity.y = 900;
-      this.game.physics.p2.friction = 0.001;
+      this.game.physics.p2.gravity.y = 3000;
+      this.game.physics.p2.friction = 0.1;
 
 
 
@@ -155,6 +161,9 @@
       this.iceplateGraphic = this.game.add.sprite(this.game.width/2, this.game.height-34-this.icePlateY, "crate");
       this.iceplateGraphic.anchor.setTo(0.5, 1);
       this.iceplateGraphic.y += 70;
+
+      this.IP1Y = this.iceplate.y;
+      this.IP2Y = this.iceplateGraphic.y;
 
       this.water2 = this.game.add.tileSprite(0, this.game.height, this.game.width, 150, "water-02");
       this.water2.anchor.setTo(0,1);
@@ -245,6 +254,11 @@
       this.shadow.angle = this.iceplate.angle;
       this.shadow.alpha = 1-Math.abs(this.crate2.x - this.game.width/2)/(this.crate2.width*0.5);
 
+      this.n++;
+      this.iceplate.body.y = this.IP1Y+Math.sin(this.n*0.06)*8;
+      this.iceplateGraphic.y = this.IP2Y+Math.sin(this.n*0.06)*8;
+      
+
       //________________ CONTROLS
       this.crate2pos = {
           x: this.crate2.body.x,
@@ -294,14 +308,14 @@
       if(this.stopHead) {
 
         if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x < this.crate2pos.x) {
-          this.head.body.velocity.x +=10;
+          this.head.body.velocity.x +=Math.abs(this.head.body.velocity.x)*0.1+(this.distanceHeadCrate-this.maxHeadDistance)*0.1;
         } else if(this.distanceHeadCrate > this.maxHeadDistance && this.headPos.x > this.crate2pos.x) {
-          this.head.body.velocity.x -=10;
+          this.head.body.velocity.x -=Math.abs(this.head.body.velocity.x)*0.1+(this.distanceHeadCrate-this.maxHeadDistance)*0.1;
         } else {
             if(this.head.body.velocity.x < 0) {
-              this.head.body.velocity.x +=5;
+              this.head.body.velocity.x +=10;
             } else if(this.head.body.velocity.x > 0) {
-              this.head.body.velocity.x -=5;
+              this.head.body.velocity.x -=10;
             }
         }
 
@@ -311,13 +325,11 @@
       //UPDATE Y POSITION OF HEAD BASED ON X
       //(x - xm)2 + (y - ym)2 = r2
       // y' = (x-u) sin(beta) + (y-v) cos(beta) + v
-      var xm = this.crate2.x-this.game.width/2;
-      var ym = this.crate2.y-this.game.width/2;
-      var x = this.head.body.x-this.game.width/2 + xm;
-      var y = -Math.abs(  300*Math.sin(  this.toRadians(x/5)  )  );
+      this.xm = this.crate2.x-this.game.width/2;
+      this.x1 = this.head.body.x-this.game.width/2 + this.xm;
 
 
-      this.head.body.y = x*x*0.001+this.headPosY;
+      this.head.body.y = this.x1*this.x1*0.001+this.headPosY;
 
 
 
@@ -340,7 +352,13 @@
 
       this.crate2animationLeft.speed = Math.abs(this.iceplateAngle)*20+15;
       this.crate2animationRight.speed = Math.abs(this.iceplateAngle)*20+15;
-
+      if(this.crate2animationLeft.speed > 180) {
+        this.head.frame = 1;
+      } else if(this.crate2animationLeft.speed > 100) {
+        this.head.frame = 2;
+      } else {
+        this.head.frame = 0
+      }
       this.animationSpeed = this.crate2animationRight.speed;
 
       this.rotatePlate();
