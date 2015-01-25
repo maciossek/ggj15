@@ -18,7 +18,7 @@
       /*---------AMBIENTE-------*/
       this.timeOutValue2 = 30;
       this.timeout2 = this.timeOutValue2;
-      this.ambientMultiplier = 1.4;
+      this.ambientMultiplier = 0;
       //mountains
       this.mountains = null;
 
@@ -485,6 +485,7 @@
     },
     setStart: function() {
       if(!this.gameStarted) {
+        this.ambientMultiplier = 1.4;
         this.gameStarted = true;
         //this.dialogueTween.to({ alpha: 0, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
         //this.dialogueTween.start();
@@ -493,6 +494,12 @@
     },
     shutdown: function() {
       this.iceplate.destroy();
+      this.iceplateGraphic.destroy();
+      this.shadow.destroy();
+      for(var i=0; i<this.circles.length;i++) {
+        this.circles[i].destroy();
+      }
+
       this.mountains.destroy();
 
       //clouds
@@ -502,6 +509,9 @@
       //water
       this.water1.destroy();
       this.water2.destroy();
+      for(var i=0; i<this.waterWaves.length;i++) {
+        this.waterWaves[i].destroy();
+      }
       this.crate2.destroy();
       this.head.destroy();
     }

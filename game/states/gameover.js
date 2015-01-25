@@ -85,6 +85,16 @@ GameOver.prototype = {
     if(this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
+  },
+  shutdown: function() {
+    this.timerText.destroy();
+    this.distanceText.destroy();
+    this.cloudz1.destroy();
+    this.cloudz2.destroy();
+    this.mountains.destroy();
+    this.frozenGiraffe.destroy();
+    this.water1.destroy();
+    this.water2.destroy();
   }
 };
 module.exports = GameOver;
