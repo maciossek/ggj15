@@ -37,13 +37,13 @@
       this.crate2 = null;
       this.crate2angleMultiplier = 0.0005;
       this.facing = 'left';
-      this.timeOutValue = 100;
+      this.timeOutValue = 1000;
       this.timeout = this.timeOutValue
       //head Variables
       this.head = null;
       this.headPosY = 100;
       this.maxHeadDistance = 470;
-      this.headAngleMultiplier = 0.0017;
+      this.headAngleMultiplier = 0.002;
       this.stopHead = true;
 
 
