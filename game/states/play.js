@@ -216,6 +216,7 @@
 
 
       //Setup Head
+      //console.log(this.crate2.y-300);
       if(this.crate2.y - this.headPosY > this.maxHeadDistance) {
         this.headPosY = this.crate2.y-this.maxHeadDistance;
         this.head = this.game.add.sprite(this.game.width/2, this.headPosY, "head");
@@ -255,11 +256,8 @@
       }
     },
     update: function() {
-      if (this.game.time.time > this.timeout2) {
-
-        this.moveBackgroundSprites();
-        this.timeout2 = this.game.time.time+this.timeOutValue2;
-      }
+        
+      this.moveBackgroundSprites();
       this.drawBezier();
 
 
@@ -367,12 +365,11 @@
           this.facing = 'idle';
         }
       }
-      if (this.game.time.time> this.timeout) {
-         this.crate2animationLeft.speed = Math.round(Math.abs(this.iceplateAngle)*20+15);
-         this.crate2animationRight.speed = this.crate2animationLeft.speed;
-         this.timeout= this.game.time.time+this.timeOutValue;
-      }
-
+     
+     this.crate2animationLeft.speed = Math.round(Math.abs(this.iceplateAngle)*20+15);
+     this.crate2animationRight.speed = this.crate2animationLeft.speed;
+   
+      
       /*if(this.crate2animationLeft.speed > 180) {
         this.head.frame = 1;
       } else if(this.crate2animationLeft.speed > 100) {
