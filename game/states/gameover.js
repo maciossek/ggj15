@@ -64,8 +64,8 @@ GameOver.prototype = {
     this.game.add.tween(this.distanceText.scale).to({ x:1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 10);;
     this.game.add.tween(this.timerText.scale).to({ x:1, y: 1 }, 500, Phaser.Easing.Back.Out, true, 10);;
 
-    this.game.add.tween(this.timerText).to({ x: this.game.width/2, y:80 }, 500, Phaser.Easing.Back.Out, true, 10);
-    this.game.add.tween(this.distanceText).to({ x: this.game.width/2, y: 220 }, 500, Phaser.Easing.Back.Out, true, 10);
+    this.game.add.tween(this.timerText).to({ x: this.game.width/2, y:120 }, 500, Phaser.Easing.Back.Out, true, 10);
+    this.game.add.tween(this.distanceText).to({ x: this.game.width/2, y: 260 }, 500, Phaser.Easing.Back.Out, true, 10);
 
 
 /*
